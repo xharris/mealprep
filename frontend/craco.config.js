@@ -8,8 +8,7 @@ module.exports = {
             options: {
                 source: "options", // (default)
                 aliases: {
-                    "@backend": "back",
-                    "@frontend": "front/src"
+                    "@front": "src"
                 }
             }
         }

@@ -29,9 +29,10 @@ const db_local = {
     }
 }
 
-const whitelist = ['http:localhost:3000']
+const whitelist = ['http:localhost:3000','http:localhost:3001']
 const corsOptions = {
     origin: (origin, callback) => {
+        console.log('origin',origin)
         if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true)
         } else {
@@ -45,20 +46,14 @@ var db = require('knex')(db_local)
 const main = require('./controllers/ingredient') // db queries
 const app = express()
 
-app.use(express.static(path.join(__dirname, 'frontend/build')))
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend/build", "index.html"))
-})
 
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(morgan('combined')) // tiny/combined
 
-app.get('/api', (req, res) => res.send('hello world'))
-app.get('/api/ingredient', (req, res) => main.getIngredient(req, res, db))
-app.post('/api/ingredient', (req, res) => main.postIngredient(req, res, db))
-
+app.get('/api', (req, res) => res.send('Welcome to mealprep'))
+app.get('/api/ingredient', require('./routes/ingredient'))
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT || 3000}`)

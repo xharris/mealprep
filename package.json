@@ -1,47 +1,28 @@
 {
   "name": "mealprep",
   "version": "0.1.0",
-  "private": true,
+  "scripts": {
+    "start": "npm run build-front && npm run backend",
+    "dev": "npm run build-front && npm run backend",
+    "backend": "cross-env PORT=3000 npx nodemon backend/index.js",
+    "build-front": "cd frontend && npm run build && cd .."
+  },
+  "devDependencies": {
+    "@babel/preset-flow": "^7.0.0",
+    "cross-env": "^6.0.3",
+    "dot-env": "0.0.1",
+    "flow-bin": "^0.109.0",
+    "nodemon": "^1.19.3"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "craco": "0.0.3",
+    "dotenv": "^8.1.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
     "knex": "^0.19.4",
     "morgan": "^1.9.1",
-    "pg": "^7.12.1",
-    "react": "^16.10.1",
-    "react-dom": "^16.10.1",
-    "react-scripts": "3.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "flow": "flow"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/preset-flow": "^7.0.0",
-    "@craco/craco": "^5.5.0",
-    "craco-alias": "^1.0.4",
-    "dotenv": "^8.1.0",
-    "flow-bin": "^0.109.0"
+    "pg": "^7.12.1"
   }
 }

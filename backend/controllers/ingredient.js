@@ -1,8 +1,6 @@
-//@flow
+import { TBL } from '../names';
 
-import { TBL } from '@backend/names';
-
-const getIngredient = (req, res, db) => {
+export const getIngredient = (_req, res, db) => {
     db
         .select('*').from(TBL.ingredients)
         .then(items => {
@@ -15,7 +13,7 @@ const getIngredient = (req, res, db) => {
         .catch(err => res.status(400).json({dbError: 'db error'}))
 }
 
-const postIngredient = (req, res, db) => {
+export const postIngredient = (req, res, db) => {
     const { name, img_url } = req.body
     const created = new Date()
     db(TBL.ingredients)

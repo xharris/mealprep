@@ -1,4 +1,9 @@
+// @flow
+const path = require('path');
 const express = require('express')
+
+// eslint-disable-next-line no-native-reassign
+require = require('esm')(module);
 require('dotenv').config()
 
 const helmet = require('helmet') // creates headers to protect from attacks
@@ -37,19 +42,23 @@ const corsOptions = {
 
 var db = require('knex')(db_local)
 
-const main = require('./controllers/main') // db queries
+const main = require('./controllers/ingredient') // db queries
 const app = express()
+
+app.use(express.static(path.join(__dirname, 'frontend/build')))
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/build", "index.html"))
+})
 
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(morgan('combined')) // tiny/combined
 
-app.get('/', (req, res) => res.send('hello world'))
-app.get('/api', (req, res) => main.getTableData(req, res, db))
-app.post('/api', (req, res) => main.getTableData(req, res, db))
-app.put('/api', (req, res) => main.getTableData(req, res, db))
-app.delete('/api', (req, res) => main.getTableData(req, res, db))
+app.get('/api', (req, res) => res.send('hello world'))
+app.get('/api/ingredient', (req, res) => main.getIngredient(req, res, db))
+app.post('/api/ingredient', (req, res) => main.postIngredient(req, res, db))
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT || 3000}`)

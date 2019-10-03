@@ -1,0 +1,51 @@
+{
+  "name": "mealprep",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "craco": "0.0.3",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "helmet": "^3.21.1",
+    "knex": "^0.19.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.1",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
+    "react-scripts": "3.1.2"
+  },
+  "scripts": {
+    "backend": "npx nodemon craco start backend/index.js",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "flow": "flow"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/preset-flow": "^7.0.0",
+    "@craco/craco": "^5.5.0",
+    "concurrently": "^4.1.2",
+    "craco-alias": "^1.0.4",
+    "dotenv": "^8.1.0",
+    "flow-bin": "^0.109.0",
+    "nodemon": "^1.19.3"
+  }
+}

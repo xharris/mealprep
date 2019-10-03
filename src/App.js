@@ -2,7 +2,8 @@
 import React from 'react';
 import './App.css';
 
-import './features/ingredient';
+import 'features/ingredient';
+import 'db';
 
 function App() {
   return (

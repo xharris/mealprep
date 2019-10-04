@@ -29,7 +29,7 @@ const db_local = {
     }
 }
 
-const whitelist = ['http:localhost:3000','http:localhost:3001']
+const whitelist = ['http://localhost:3000','http://localhost:3001']
 const corsOptions = {
     origin: (origin, callback) => {
         console.log('origin',origin)

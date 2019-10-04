@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "npm run build-front && npm run backend",
-    "dev": "npx concurrently \"npm run backend\" \"npx cross-env PORT=3001 npm run frontend\"",
+    "dev": "npx concurrently --handle-input -n back,front \"npm run backend\" \"npx cross-env PORT=3001 npm run frontend\"",
     "backend": "npx nodemon backend/index.js",
     "frontend": "cd frontend && npm start"
   },

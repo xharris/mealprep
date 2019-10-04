@@ -1,37 +1,17 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.scss";
 
-import { getWelcomeText } from '@front/db';
+import IngredientCard from "@front/feature/ingredient";
 
-function App() {
-  const [ welcomeText, setWelcomeText ] = useState("bop");
+// import { getWelcomeText } from '@front/db';
 
-  getWelcomeText()
-    .then(res => {
-      console.log(res)
-      setWelcomeText(res)
-    });
-
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {welcomeText}
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <IngredientCard />
     </div>
   );
-}
+};
 
 export default App;

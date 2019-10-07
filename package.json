@@ -1,29 +1,25 @@
 {
   "name": "mealprep",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "start": "npm run build-front && npm run backend",
     "dev": "npx concurrently --handle-input -n back,front \"npm run backend\" \"npx cross-env PORT=3001 npm run frontend\"",
-    "backend": "npx nodemon backend/index.js",
+    "backend": "cd backend && npm start",
     "frontend": "cd frontend && npm start"
   },
-  "devDependencies": {
-    "@babel/preset-flow": "^7.0.0",
-    "concurrently": "^4.1.2",
-    "cross-env": "^6.0.3",
-    "dot-env": "0.0.1",
-    "flow-bin": "^0.109.0",
-    "nodemon": "^1.19.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xharris/mealprep.git"
   },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.1.0",
-    "esm": "^3.2.25",
-    "express": "^4.17.1",
-    "helmet": "^3.21.1",
-    "knex": "^0.19.4",
-    "morgan": "^1.9.1",
-    "pg": "^7.12.1"
+  "author": "XHH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xharris/mealprep/issues"
+  },
+  "homepage": "https://github.com/xharris/mealprep#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "cross-env": "^6.0.3"
   }
 }

@@ -29,7 +29,7 @@ const MonthYearSelector = () => {
 
   const [currentMonth, setCurrentMonth] = useState(moment().month());
 
-  let onMonthChange = e => {
+  var onMonthChange = e => {
     setCurrentMonth(e.target.value);
   };
   return (
@@ -92,9 +92,52 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(currentDate.month());
   const [currentYear, setCurrentYear] = useState(currentDate.year());
 
+  var createTableDays = () => {
+    var rows = [];
+    var days = currentDate.daysInMonth();
+    for (var i = 0; i < 31; i++) {
+      if (i % 7 === 0) {
+        let cells = [];
+        for (var k = 0; k < 7; k++) {
+          let d = i + k - currentDate.day() + 1;
+          if (d > 0 && d <= days)
+            cells.push(
+              <td className={style.tableCell} key={d}>
+                {d}
+              </td>
+            );
+          else cells.push(<td key={d}></td>);
+        }
+        rows.push(<tr key={i / 7}>{cells}</tr>);
+      }
+    }
+    return rows;
+  };
+
+  var prevMonth = () => {
+    if (currentMonth <= 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+
+  var nextMonth = () => {
+    if (currentMonth >= 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+
+  var tableDays = createTableDays();
   useEffect(() => {
     currentDate = moment({ month: currentMonth, year: currentYear });
-  });
+    console.log("real", currentDate.daysInMonth());
+    tableDays = createTableDays();
+  }, [currentMonth, currentYear]);
 
   return (
     <Paper className={style.calendar}>
@@ -106,32 +149,26 @@ const Calendar = () => {
         <Button className={style.month} color="primary">
           {moment.months()[currentMonth] + " " + currentYear}
         </Button>
-        <Button color="primary" size="small">
+        <Button color="primary" size="small" onClick={prevMonth}>
           <ArrowLeftIcon />
         </Button>
-        <Button color="primary" size="small">
+        <Button color="primary" size="small" onClick={nextMonth}>
           <ArrowRightIcon />
         </Button>
       </ButtonGroup>
       <table className={style.table}>
-        <tr>
-          {[...Array(7).keys()].map(d => (
-            <th className={style.tableCell}>
-              {moment()
-                .weekday(d)
-                .format("dd")}
-            </th>
-          ))}
-        </tr>
-        {[...Array(currentDate.daysInMonth()).keys()].map(d => {
-          return (
-            <tr>
-              {moment()
-                .weekday(d)
-                .format("dd")}
-            </tr>
-          );
-        })}
+        <thead>
+          <tr>
+            {[...Array(7).keys()].map(d => (
+              <th className={style.tableCell} key={d}>
+                {moment()
+                  .weekday(d)
+                  .format("dd")}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{tableDays}</tbody>
       </table>
     </Paper>
   );

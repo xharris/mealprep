@@ -69,13 +69,17 @@ const MonthYearSelector = () => {
 const styleCalendar = makeStyles(theme => ({
   calendar: {
     textAlign: "left",
-    width: 400
+    width: "100%",
+    height: "100%"
   },
-  monthYear: {
-    width: "100%"
+  monthYearContainer: {
+    width: "100%",
+    textAlign: "center"
   },
+  monthYear: {},
   month: {
-    flex: 1
+    flex: 1,
+    padding: "0px 50px"
   },
   table: {
     width: "100%"
@@ -87,10 +91,8 @@ const styleCalendar = makeStyles(theme => ({
 
 const Calendar = () => {
   const style = styleCalendar();
-  var currentDate = moment();
 
-  const [currentMonth, setCurrentMonth] = useState(currentDate.month());
-  const [currentYear, setCurrentYear] = useState(currentDate.year());
+  const [currentDate, setCurrentDate] = useState(moment());
 
   var createTableDays = () => {
     var rows = [];
@@ -115,47 +117,42 @@ const Calendar = () => {
   };
 
   var prevMonth = () => {
-    if (currentMonth <= 0) {
-      setCurrentMonth(11);
-      setCurrentYear(currentYear - 1);
+    var month = currentDate.month();
+    var year = currentDate.year();
+    if (month <= 0) {
+      setCurrentDate(moment({ date: 1, month: 11, year: year - 1 }));
     } else {
-      setCurrentMonth(currentMonth - 1);
+      setCurrentDate(moment({ date: 1, month: month - 1, year: year }));
     }
   };
 
   var nextMonth = () => {
-    if (currentMonth >= 11) {
-      setCurrentMonth(0);
-      setCurrentYear(currentYear + 1);
+    var month = currentDate.month();
+    var year = currentDate.year();
+    if (month >= 11) {
+      setCurrentDate(moment({ date: 1, month: 0, year: year + 1 }));
     } else {
-      setCurrentMonth(currentMonth + 1);
+      setCurrentDate(moment({ date: 1, month: month + 1, year: year }));
     }
   };
 
   var tableDays = createTableDays();
-  useEffect(() => {
-    currentDate = moment({ month: currentMonth, year: currentYear });
-    console.log("real", currentDate.daysInMonth());
-    tableDays = createTableDays();
-  }, [currentMonth, currentYear]);
 
   return (
     <Paper className={style.calendar}>
-      <ButtonGroup
-        className={style.monthYear}
-        variant="contained"
-        color="primary"
-      >
-        <Button className={style.month} color="primary">
-          {moment.months()[currentMonth] + " " + currentYear}
-        </Button>
-        <Button color="primary" size="small" onClick={prevMonth}>
-          <ArrowLeftIcon />
-        </Button>
-        <Button color="primary" size="small" onClick={nextMonth}>
-          <ArrowRightIcon />
-        </Button>
-      </ButtonGroup>
+      <Container className={style.monthYearContainer}>
+        <ButtonGroup className={style.monthYear} variant="text">
+          <Button color="primary" size="small" onClick={prevMonth}>
+            <ArrowLeftIcon />
+          </Button>
+          <Button className={style.month} color="primary">
+            {currentDate.format("MMMM") + " " + currentDate.year()}
+          </Button>
+          <Button color="primary" size="small" onClick={nextMonth}>
+            <ArrowRightIcon />
+          </Button>
+        </ButtonGroup>
+      </Container>
       <table className={style.table}>
         <thead>
           <tr>

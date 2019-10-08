@@ -3,10 +3,9 @@ import React, { Component, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Container,
-  Paper,
+  Card,
   Grid,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Button,
@@ -14,18 +13,19 @@ import {
 } from "@material-ui/core";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import TodayIcon from "@material-ui/icons/Today";
 
 const moment = require("moment");
 
-const styleMonthYearSelector = makeStyles(theme => ({
+const styleMonthYearForm = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120
   }
 }));
 
-const MonthYearSelector = () => {
-  const style = styleMonthYearSelector();
+const MonthYearForm = () => {
+  const style = styleMonthYearForm();
 
   const [currentMonth, setCurrentMonth] = useState(moment().month());
 
@@ -66,10 +66,49 @@ const MonthYearSelector = () => {
   );
 };
 
-const styleCalendar = makeStyles(theme => ({
+const styleMonthYear = makeStyles(theme => ({
+  buttonValue: {
+    minWidth: "130px"
+  }
+}));
+
+const MonthYear = ({ time, onChange }) => {
+  const style = styleMonthYear();
+
+  var prevMonth = () => {
+    onChange(
+      moment(time)
+        .subtract(1, "M")
+        .unix()
+    );
+  };
+  var nextMonth = () => {
+    onChange(
+      moment(time)
+        .add(1, "M")
+        .unix()
+    );
+  };
+
+  return (
+    <ButtonGroup variant="text">
+      <Button color="primary" size="small" onClick={prevMonth}>
+        <ArrowLeftIcon />
+      </Button>
+      <Button className={style.buttonValue} color="primary">
+        {moment(time).format("MMMM 'YY")}
+      </Button>
+      <Button color="primary" size="small" onClick={nextMonth}>
+        <ArrowRightIcon />
+      </Button>
+    </ButtonGroup>
+  );
+};
+
+const styleCalendarMonth = makeStyles(theme => ({
   calendar: {
     textAlign: "left",
-    width: "100%",
+    width: props => (props.size === "fill" ? "100%" : "300px"),
     height: "100%"
   },
   monthYearContainer: {
@@ -89,19 +128,20 @@ const styleCalendar = makeStyles(theme => ({
   }
 }));
 
-const Calendar = () => {
-  const style = styleCalendar();
+export const CalendarMonth = props => {
+  const style = styleCalendarMonth(props);
 
-  const [currentDate, setCurrentDate] = useState(moment());
-
-  var createTableDays = () => {
+  const getTableDays = () => {
     var rows = [];
-    var days = currentDate.daysInMonth();
+    var days = time.daysInMonth();
     for (var i = 0; i < 31; i++) {
+      // iterate through max number of days
       if (i % 7 === 0) {
+        // but only use first day of each week
         let cells = [];
         for (var k = 0; k < 7; k++) {
-          let d = i + k - currentDate.day() + 1;
+          // iterate days in week
+          let d = i + k - time.day() + 1; // calculate actualy date
           if (d > 0 && d <= days)
             cells.push(
               <td className={style.tableCell} key={d}>
@@ -116,43 +156,41 @@ const Calendar = () => {
     return rows;
   };
 
-  var prevMonth = () => {
-    var month = currentDate.month();
-    var year = currentDate.year();
-    if (month <= 0) {
-      setCurrentDate(moment({ date: 1, month: 11, year: year - 1 }));
-    } else {
-      setCurrentDate(moment({ date: 1, month: month - 1, year: year }));
-    }
-  };
+  const [time, setTime] = useState(moment());
+  const [tableDays, setTableDays] = useState(getTableDays());
 
-  var nextMonth = () => {
-    var month = currentDate.month();
-    var year = currentDate.year();
-    if (month >= 11) {
-      setCurrentDate(moment({ date: 1, month: 0, year: year + 1 }));
-    } else {
-      setCurrentDate(moment({ date: 1, month: month + 1, year: year }));
-    }
-  };
-
-  var tableDays = createTableDays();
+  useEffect(() => {
+    setTableDays(getTableDays());
+  }, [time]);
 
   return (
-    <Paper className={style.calendar}>
-      <Container className={style.monthYearContainer}>
-        <ButtonGroup className={style.monthYear} variant="text">
-          <Button color="primary" size="small" onClick={prevMonth}>
-            <ArrowLeftIcon />
+    <Card className={style.calendar}>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
+        <Grid item>
+          <MonthYear
+            time={time}
+            onChange={t => {
+              setTime(moment.unix(t));
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            color="primary"
+            size="small"
+            onClick={() => {
+              setTime(moment());
+            }}
+          >
+            <TodayIcon />
           </Button>
-          <Button className={style.month} color="primary">
-            {currentDate.format("MMMM") + " " + currentDate.year()}
-          </Button>
-          <Button color="primary" size="small" onClick={nextMonth}>
-            <ArrowRightIcon />
-          </Button>
-        </ButtonGroup>
-      </Container>
+        </Grid>
+      </Grid>
       <table className={style.table}>
         <thead>
           <tr>
@@ -167,8 +205,6 @@ const Calendar = () => {
         </thead>
         <tbody>{tableDays}</tbody>
       </table>
-    </Paper>
+    </Card>
   );
 };
-
-export default Calendar;

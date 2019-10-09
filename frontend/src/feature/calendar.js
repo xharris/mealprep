@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Container,
+  IconButton,
   Card,
   Grid,
   FormControl,
@@ -125,7 +125,13 @@ const styleCalendarMonth = makeStyles(theme => ({
   },
   tableCell: {
     textAlign: "center"
-  }
+  },
+  dayButton: {
+    width: "30px",
+    fontSize: "0.75rem",
+    height: "30px"
+  },
+  todayButton: {}
 }));
 
 export const CalendarMonth = props => {
@@ -142,10 +148,25 @@ export const CalendarMonth = props => {
         for (var k = 0; k < 7; k++) {
           // iterate days in week
           let d = i + k - time.day() + 1; // calculate actualy date
+          let today = props.time.isSame(moment(time).date(d));
+          console.log(today, props.time.format(), moment(time).format());
           if (d > 0 && d <= days)
             cells.push(
               <td className={style.tableCell} key={d}>
-                {d}
+                <IconButton
+                  className={`${style.dayButton} ${
+                    today ? style.todayButton : ""
+                  }`}
+                  size={"small"}
+                  disabled={today}
+                  onClick={() => {
+                    if (props.onDateSelect) {
+                      props.onDateSelect(time.date(d));
+                    }
+                  }}
+                >
+                  {d}
+                </IconButton>
               </td>
             );
           else cells.push(<td key={d}></td>);
@@ -156,7 +177,7 @@ export const CalendarMonth = props => {
     return rows;
   };
 
-  const [time, setTime] = useState(moment());
+  const [time, setTime] = useState(props.time);
   const [tableDays, setTableDays] = useState(getTableDays());
 
   useEffect(() => {
@@ -182,7 +203,6 @@ export const CalendarMonth = props => {
         <Grid item>
           <Button
             color="primary"
-            size="small"
             onClick={() => {
               setTime(moment());
             }}

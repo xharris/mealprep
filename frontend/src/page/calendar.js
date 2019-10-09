@@ -32,7 +32,22 @@ const CalendarPage = () => {
       </Grid>
       <Grid item>
         <MealList
-          meals={[{ id: 0, name: "Pizza" }, { id: 1, name: "Burger" }]}
+          meals={[
+            {
+              id: 0,
+              name: "Pizza",
+              time: moment({ minutes: 17 }),
+              image:
+                "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/dc23cd051d2249a5903d25faf8eeee4c/BFV36537_CC2017_2IngredintDough4Ways-FB.jpg"
+            },
+            {
+              id: 1,
+              name: "Burger",
+              time: moment({ hours: 1, minutes: 10 }),
+              image:
+                "https://assets.bonappetit.com/photos/5d1cb1880813410008e914fc/16:9/w_1200,c_limit/Print-Summer-Smash-Burger.jpg"
+            }
+          ]}
         />
       </Grid>
     </Grid>

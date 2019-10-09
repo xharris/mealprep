@@ -108,8 +108,8 @@ const MonthYear = ({ time, onChange }) => {
 const styleCalendarMonth = makeStyles(theme => ({
   calendar: {
     textAlign: "left",
-    width: props => (props.size === "fill" ? "100%" : "300px"),
-    height: "100%"
+    width: props => (props.size === "fill" ? "100%" : 300),
+    height: props => (props.size === "fill" ? "100%" : 230)
   },
   monthYearContainer: {
     width: "100%",
@@ -148,8 +148,11 @@ export const CalendarMonth = props => {
         for (var k = 0; k < 7; k++) {
           // iterate days in week
           let d = i + k - time.day() + 1; // calculate actualy date
-          let today = props.time.isSame(moment(time).date(d));
-          console.log(today, props.time.format(), moment(time).format());
+          let today =
+            props.time.format("MM DD YY") ===
+            moment(time)
+              .date(d)
+              .format("MM DD YY");
           if (d > 0 && d <= days)
             cells.push(
               <td className={style.tableCell} key={d}>

@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import lightGreen from "@material-ui/core/colors/lightGreen";
 
+import foodPlaceholder from "@image/food_placeholder.png";
+
 import {
   Box,
   Card,
@@ -46,11 +48,19 @@ const styleMealCard = makeStyles(theme => ({
   },
   name: {
     fontSize: 14,
-    fontWeight: 900
+    fontWeight: 900,
+    width: 130,
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis"
   },
   content: {
     flex: "1 0 auto",
-    color: "#616161"
+    color: "#616161",
+    padding: 5,
+    "& *": {
+      textAlign: "left"
+    }
   },
   time: {
     fontSize: 12
@@ -69,23 +79,23 @@ export const MealCard = props => {
       onClick={() => {
         onClick();
         setSelected(!selected);
-        console.log(selected);
       }}
     >
       <Badge
         className={style.badge}
-        invisible={!selected}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        badgeContent={<CheckCircleTwoToneIcon />}
+        badgeContent={selected === true ? <CheckCircleTwoToneIcon /> : null}
       >
         <Card className={style.card}>
           <CardMedia
             className={style.image}
-            image={meal.image}
+            image={meal.image || foodPlaceholder}
             title={meal.name}
           />
           <CardContent className={style.content}>
-            <Typography className={style.name}>{meal.name}</Typography>
+            <Typography className={style.name} title={meal.name}>
+              {meal.name}
+            </Typography>
             <Typography className={style.time}>
               {MomentUtil.hmsFormat(meal.time)}
             </Typography>

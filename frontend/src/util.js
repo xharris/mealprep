@@ -7,3 +7,29 @@ export class MomentUtil {
     return time.format(format_str.join(" "));
   }
 }
+
+export class Meal {
+  constructor(db_info) {
+    this.info = db_info;
+    ["name", "time"].forEach(key => {
+      Object.defineProperty(this, key, {
+        get: () => this.info[key],
+        set: v => {
+          // store in databse
+          this.info[key] = v;
+        }
+      });
+    });
+  }
+  get id() {
+    return this.info.id;
+  }
+  filterTags(tags) {
+    return (
+      tags.length === 0 ||
+      tags.some(
+        tag => tag.key === "name" && this.name.toLowerCase().includes(tag.value)
+      )
+    );
+  }
+}

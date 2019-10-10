@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Grid } from "@material-ui/core";
-import { CalendarMonth } from "@front/feature/calendar";
-import { MealList } from "@front/feature/meallist";
+import { CalendarMonth } from "@feature/calendar";
+import { MealList } from "@feature/meallist";
+
+import { Meal } from "@front/util";
 
 const moment = require("moment");
 
-const styleCalendarPage = makeStyles(theme => ({}));
+const styleCalendarPage = makeStyles(theme => ({
+  calendar: {
+    marginTop: 50
+  }
+}));
 
 const CalendarPage = () => {
   const style = styleCalendarPage();
@@ -16,6 +22,7 @@ const CalendarPage = () => {
 
   return (
     <Grid
+      className={style.calendar}
       container
       spacing={2}
       direction="row"
@@ -23,12 +30,7 @@ const CalendarPage = () => {
       alignItems="center"
     >
       <Grid item>
-        <CalendarMonth
-          time={time}
-          onDateSelect={t => {
-            setTime(t);
-          }}
-        />
+        <CalendarMonth time={time} onDateSelect={setTime} />
       </Grid>
       <Grid item>
         <MealList
@@ -46,8 +48,23 @@ const CalendarPage = () => {
               time: moment({ hours: 1, minutes: 10 }),
               image:
                 "https://assets.bonappetit.com/photos/5d1cb1880813410008e914fc/16:9/w_1200,c_limit/Print-Summer-Smash-Burger.jpg"
+            },
+            {
+              id: 2,
+              name: "Goop",
+              time: moment({ hours: 3, minutes: 2, seconds: 1 })
+            },
+            {
+              id: 3,
+              name: "Grain of rice on toast",
+              time: moment({ seconds: 30 })
+            },
+            {
+              id: 4,
+              name: "Lemonade with fresh lemons! OMG long title!!",
+              time: moment({ minutes: 30 })
             }
-          ]}
+          ].map(d => new Meal(d))}
         />
       </Grid>
     </Grid>

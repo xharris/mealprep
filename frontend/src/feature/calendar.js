@@ -14,6 +14,7 @@ import {
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import TodayIcon from "@material-ui/icons/Today";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const moment = require("moment");
 
@@ -131,15 +132,23 @@ const styleCalendarMonth = makeStyles(theme => ({
     fontSize: "0.75rem",
     height: "30px"
   },
-  todayButton: {}
+  todayButton: {
+    backgroundColor: `${blueGrey[100]} !important`
+  }
 }));
 
 export const CalendarMonth = props => {
   const style = styleCalendarMonth(props);
 
+  const timeChanged = new_time => {
+    if (props.onDateSelect) props.onDateSelect(new_time);
+  };
+
   const getTableDays = () => {
+    var inTime = moment(props.time);
+    var dispTime = moment(time);
     var rows = [];
-    var days = time.daysInMonth();
+    var days = dispTime.daysInMonth();
     for (var i = 0; i < 31; i++) {
       // iterate through max number of days
       if (i % 7 === 0) {
@@ -147,10 +156,10 @@ export const CalendarMonth = props => {
         let cells = [];
         for (var k = 0; k < 7; k++) {
           // iterate days in week
-          let d = i + k - time.day() + 1; // calculate actualy date
+          let d = i + k - dispTime.day() + 1; // calculate actualy date
           let today =
-            props.time.format("MM DD YY") ===
-            moment(time)
+            inTime.format("MM DD YY") ===
+            moment(dispTime)
               .date(d)
               .format("MM DD YY");
           if (d > 0 && d <= days)
@@ -163,9 +172,7 @@ export const CalendarMonth = props => {
                   size={"small"}
                   disabled={today}
                   onClick={() => {
-                    if (props.onDateSelect) {
-                      props.onDateSelect(time.date(d));
-                    }
+                    timeChanged(dispTime.date(d));
                   }}
                 >
                   {d}
@@ -181,11 +188,6 @@ export const CalendarMonth = props => {
   };
 
   const [time, setTime] = useState(props.time);
-  const [tableDays, setTableDays] = useState(getTableDays());
-
-  useEffect(() => {
-    setTableDays(getTableDays());
-  }, [time]);
 
   return (
     <Card className={style.calendar}>
@@ -208,6 +210,7 @@ export const CalendarMonth = props => {
             color="primary"
             onClick={() => {
               setTime(moment());
+              timeChanged(moment());
             }}
           >
             <TodayIcon />
@@ -226,7 +229,7 @@ export const CalendarMonth = props => {
             ))}
           </tr>
         </thead>
-        <tbody>{tableDays}</tbody>
+        <tbody>{getTableDays()}</tbody>
       </table>
     </Card>
   );

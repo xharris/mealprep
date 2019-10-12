@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -93,13 +93,13 @@ const MonthYear = ({ time, onChange }) => {
 
   return (
     <ButtonGroup variant="text">
-      <Button color="primary" size="small" onClick={prevMonth}>
+      <Button color="secondary" size="small" onClick={prevMonth}>
         <ArrowLeftIcon />
       </Button>
-      <Button className={style.buttonValue} color="primary">
+      <Button className={style.buttonValue} color="secondary">
         {moment(time).format("MMMM 'YY")}
       </Button>
-      <Button color="primary" size="small" onClick={nextMonth}>
+      <Button color="secondary" size="small" onClick={nextMonth}>
         <ArrowRightIcon />
       </Button>
     </ButtonGroup>
@@ -149,6 +149,9 @@ export const CalendarMonth = props => {
     var dispTime = moment(time);
     var rows = [];
     var days = dispTime.daysInMonth();
+    var firstDay = moment(dispTime)
+      .date(1)
+      .day();
     for (var i = 0; i < 31; i++) {
       // iterate through max number of days
       if (i % 7 === 0) {
@@ -156,7 +159,7 @@ export const CalendarMonth = props => {
         let cells = [];
         for (var k = 0; k < 7; k++) {
           // iterate days in week
-          let d = i + k - dispTime.day() + 1; // calculate actualy date
+          let d = i + k - firstDay + 1; // calculate actualy date
           let today =
             inTime.format("MM DD YY") ===
             moment(dispTime)
@@ -207,7 +210,7 @@ export const CalendarMonth = props => {
         </Grid>
         <Grid item>
           <Button
-            color="primary"
+            color="secondary"
             onClick={() => {
               setTime(moment());
               timeChanged(moment());

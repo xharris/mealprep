@@ -6,7 +6,6 @@ import lightGreen from "@material-ui/core/colors/lightGreen";
 import foodPlaceholder from "@image/food_placeholder.png";
 
 import {
-  Box,
   Card,
   CardMedia,
   CardContent,
@@ -28,14 +27,16 @@ const styleMealCard = makeStyles(theme => ({
   },
   badge: {
     width: "100%",
-    color: lightGreen.A700,
+    color: theme.palette.primary[500],
     "& .MuiBadge-badge": {
       transform: "translate(-2px, 5px);"
     },
     borderRadius: 8,
     boxSizing: "border-box",
     border: props =>
-      `${props.meal_info.selected ? lightGreen.A700 : "transparent"} 3px solid`
+      `${
+        props.meal_info.selected ? theme.palette.primary[500] : "transparent"
+      } 3px solid`
   },
   card: {
     display: "flex",

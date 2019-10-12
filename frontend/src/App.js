@@ -1,7 +1,19 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 
-import CalendarPage from "@front/page/calendar";
+import { Box } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+import lightGreen from "@material-ui/core/colors/lightGreen";
+import orange from "@material-ui/core/colors/orange";
+
+import CalendarPage from "@page/calendar";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: lightGreen,
+    secondary: orange
+  }
+});
 
 const styleApp = makeStyles(theme => ({
   app: {
@@ -13,9 +25,11 @@ const styleApp = makeStyles(theme => ({
 const App = () => {
   const style = styleApp();
   return (
-    <div className={style.app}>
-      <CalendarPage />
-    </div>
+    <ThemeProvider theme={theme}>
+      <Box className={style.app}>
+        <CalendarPage />
+      </Box>
+    </ThemeProvider>
   );
 };
 

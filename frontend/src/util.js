@@ -11,7 +11,7 @@ export class MomentUtil {
 export class Meal {
   constructor(db_info) {
     this.info = db_info;
-    ["name", "time"].forEach(key => {
+    ["name", "time", "image"].forEach(key => {
       Object.defineProperty(this, key, {
         get: () => this.info[key],
         set: v => {

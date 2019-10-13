@@ -10,7 +10,8 @@ import {
   Checkbox,
   Button,
   ButtonGroup,
-  Tooltip
+  Tooltip,
+  Typography
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
@@ -20,6 +21,9 @@ import { MealCard } from "@feature/mealcard";
 import { Search } from "@feature/search";
 
 const styleMealList = makeStyles(theme => ({
+  title: {
+    marginLeft: 2
+  },
   paper: {
     height: 400,
     width: 262,
@@ -49,67 +53,74 @@ export const MealList = props => {
   const [selectedOnly, setSelectedOnly] = useState(false);
 
   return (
-    <Paper className={style.paper}>
-      <Search
-        className={style.search}
-        onChange={terms => {
-          setSearchTerms(terms);
-        }}
-      />
-      <Box className={style.boxList}>
-        {props.meals
-          .filter(
-            meal =>
-              (selectedOnly === false || meal.selected) &&
-              meal.filterTags(searchTerms)
-          )
-          .map(meal => (
-            <MealCard
-              key={meal.id}
-              meal_info={meal}
-              selected={meal.selected}
-              onClick={() => {
-                meal.selected = !meal.selected;
-              }}
-            />
-          ))}
-      </Box>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={style.boxFooter}
-      >
-        <FormGroup row>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={selectedOnly}
-                onChange={e => {
-                  setSelectedOnly(e.target.checked);
+    <Box className="style.box">
+      {props.title ? (
+        <Typography className={style.title} variant="button">
+          {props.title}
+        </Typography>
+      ) : null}
+      <Paper className={style.paper}>
+        <Search
+          className={style.search}
+          onChange={terms => {
+            setSearchTerms(terms);
+          }}
+        />
+        <Box className={style.boxList}>
+          {props.meals
+            .filter(
+              meal =>
+                (selectedOnly === false || meal.selected) &&
+                meal.filterTags(searchTerms)
+            )
+            .map(meal => (
+              <MealCard
+                key={meal.id}
+                meal_info={meal}
+                selected={meal.selected}
+                onClick={() => {
+                  meal.selected = !meal.selected;
                 }}
-                color="secondary"
-                value="selectedOnly"
               />
-            }
-            label="selected"
-          />
-        </FormGroup>
-        <ButtonGroup variant="text">
-          <Tooltip title="Import recipe from a website">
-            <Button color="secondary" size="small" onClick={e => {}}>
-              <CloudDownloadIcon />
-            </Button>
-          </Tooltip>
+            ))}
+        </Box>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+          className={style.boxFooter}
+        >
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={selectedOnly}
+                  onChange={e => {
+                    setSelectedOnly(e.target.checked);
+                  }}
+                  color="secondary"
+                  value="selectedOnly"
+                />
+              }
+              label="selected"
+            />
+          </FormGroup>
+          <ButtonGroup variant="text">
+            <Tooltip title="Import recipe from a website">
+              <Button color="secondary" size="small" onClick={e => {}}>
+                <CloudDownloadIcon />
+              </Button>
+            </Tooltip>
 
-          <Tooltip title="Create new recipe">
-            <Button color="secondary" size="small" onClick={e => {}}>
-              <AddIcon />
-            </Button>
-          </Tooltip>
-        </ButtonGroup>
-      </Grid>
-    </Paper>
+            <Tooltip title="Create new recipe">
+              <Button color="secondary" size="small" onClick={e => {}}>
+                <AddIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        </Grid>
+      </Paper>
+    </Box>
   );
 };

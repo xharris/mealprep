@@ -34,6 +34,7 @@ const CalendarPage = () => {
       </Grid>
       <Grid item>
         <MealList
+          title={"Meal Library"}
           meals={[
             {
               id: 0,

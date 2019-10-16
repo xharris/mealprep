@@ -6,7 +6,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import lightGreen from "@material-ui/core/colors/lightGreen";
 import orange from "@material-ui/core/colors/orange";
 
-import CalendarPage from "@page/calendar";
+import MealBuilder from "@page/mealbuilder";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box className={style.app}>
-        <CalendarPage />
+        <MealBuilder />
       </Box>
     </ThemeProvider>
   );

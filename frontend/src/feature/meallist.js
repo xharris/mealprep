@@ -107,13 +107,13 @@ export const MealList = props => {
             />
           </FormGroup>
           <ButtonGroup variant="text">
-            <Tooltip title="Import recipe from a website">
+            <Tooltip title="Import meal">
               <Button color="secondary" size="small" onClick={e => {}}>
                 <CloudDownloadIcon />
               </Button>
             </Tooltip>
 
-            <Tooltip title="Create new recipe">
+            <Tooltip title="Create new meal">
               <Button color="secondary" size="small" onClick={e => {}}>
                 <AddIcon />
               </Button>

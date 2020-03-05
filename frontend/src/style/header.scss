@@ -1,0 +1,89 @@
+@import "mixins";
+@import "variables";
+
+$header-height: 50px;
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  align-items: center;
+  height: $header-height;
+  @include BoxShadow(4);
+
+  .pages-container {
+    flex: 0 1 100%;
+    text-align: center;
+    height: $header-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
+
+.header-page {
+  padding: 0px 15px;
+  width: 130px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+
+  .subcontainer {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .text {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+
+    transition: all $transition 0.2s;
+  }
+
+  .subtext {
+    max-height: 0px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 14px;
+    transition: all $transition 0.2s;
+  }
+
+  img {
+    opacity: 0.15;
+    filter: grayscale(1);
+    transition: all $transition 0.2s;
+  }
+
+  &:hover {
+    .subtext {
+      max-height: 30px;
+    }
+
+    img {
+      filter: grayscale(0);
+    }
+  }
+
+  img {
+    max-width: 80px;
+    position: absolute;
+    right: 10px;
+    bottom: -75%;
+    z-index: -10;
+  }
+}
+
+.header-separator {
+  height: 80%;
+  border-left: 1px solid #e0e0e0;
+}

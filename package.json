@@ -18,7 +18,10 @@
     "url": "https://github.com/xharris/mealprep/issues"
   },
   "homepage": "https://github.com/xharris/mealprep#readme",
-  "dependencies": {},
+  "dependencies": {
+    "polished": "^3.4.4",
+    "styled-components": "^5.0.1"
+  },
   "devDependencies": {
     "concurrently": "^5.0.0",
     "cross-env": "^6.0.3",

@@ -12,7 +12,8 @@ module.exports = {
           "@db": "src/db",
           "@page": "src/page",
           "@feature": "src/feature",
-          "@image": "src/res"
+          "@image": "src/res",
+          "@style": "src/style"
         }
       }
     }

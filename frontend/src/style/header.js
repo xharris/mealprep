@@ -1,15 +1,21 @@
 import styled from "styled-components";
-import { darken, transparentize } from "polished";
+import { rgba, darken, transparentize } from "polished";
 import "@style/header.scss";
 
-export const S = {
-  HeaderPage: styled.div`
-    color: ${props => props.color};
+import { NavLink } from "react-router-dom";
 
-    &:hover {
+export const S = {
+  NavLink: styled(NavLink)`
+    &.on-page .bg {
+      background-color: ${props => rgba(props.color, 0.1)};
+    }
+    &.on-page > div,
+    &:hover > div {
       text-shadow: 0px 0px 15px ${props => transparentize(0.1, props.color)};
       color: ${props => darken(0.25, props.color)};
     }
   `,
-  Header: styled.div``
+  HeaderPage: styled.div`
+    color: ${props => props.color};
+  `
 };

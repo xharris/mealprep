@@ -4,26 +4,17 @@ import "purecss";
 import "@style/index.scss";
 
 import Home from "@page/home";
-import Explore from "@page/explore";
-import Create from "@page/create";
-import Plan from "@page/plan";
+import EventList from "@page/eventlist";
+import EventView from "@page/eventview";
 
 const App = () => {
   return (
     <BrowserRouter className="app">
       <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/explore">
-          <Explore />
-        </Route>
-        <Route path="/create">
-          <Create />
-        </Route>
-        <Route path="/plan">
-          <Plan />
-        </Route>
+        <Route exact path="/" component={Home} />
+        <Route path="/events/global" component={EventList} />
+        <Route path="/events/me" component={EventList} />
+        <Route path="/e/:eventid" component={EventView} />
       </Switch>
     </BrowserRouter>
   );

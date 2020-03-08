@@ -1,19 +1,27 @@
 import React from "react";
 
+import Body from "@feature/body";
 import Header from "@feature/header";
+import Map from "@feature/map";
+
+import styled from "styled-components";
+// import "@style/home.scss";
+
+const S = {
+  Home: styled.div`
+    width: 100%;
+    height: 100%;
+  `
+};
 
 const Home = () => {
   return (
-    <>
-      <div>
-        <Header />
-        <div>todays meals</div>
-        <div>
-          <div>trending</div>
-          <div>popular tags</div>
-        </div>
-      </div>
-    </>
+    <S.Home>
+      <Header />
+      <Body>
+        <Map />
+      </Body>
+    </S.Home>
   );
 };
 

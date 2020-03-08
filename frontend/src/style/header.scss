@@ -1,23 +1,25 @@
 @import "mixins";
 @import "variables";
 
-$header-height: 50px;
-
-.header {
+.f-header {
   @include BoxShadow(4);
   display: flex;
   flex-direction: row;
   align-content: stretch;
   align-items: center;
   height: $header-height;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  z-index: 10;
 
   .logo-link {
     z-index: 10;
   }
 
   .logo {
-    width: 48px;
-    margin-left: 20px;
+    width: $logo-width;
+    margin-left: $logo-margin-left;
     vertical-align: middle;
   }
 
@@ -31,6 +33,7 @@ $header-height: 50px;
     position: absolute;
     left: 0;
     right: 0;
+    margin: 0px ($logo-margin-left + $logo-width);
   }
 }
 
@@ -75,7 +78,7 @@ $header-height: 50px;
     max-height: 0px;
     overflow: hidden;
     font-size: 12px;
-    line-height: 14px;
+    line-height: 18px;
     transition: all $transition 0.2s;
   }
 

@@ -1,0 +1,17 @@
+.p-event-list {
+  .f-body {
+    display: flex;
+  }
+  .body-left {
+    flex: 0 1 100%;
+  }
+  .body-right {
+    flex: 0 0 400px;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 25px;
+    box-sizing: border-box;
+  }
+}

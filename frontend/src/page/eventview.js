@@ -21,6 +21,16 @@ const EventList = withRouter(props => {
         </div>
         <div className="body-right">
           <div className="title">{event.title}</div>
+          <div className="date_loc">
+            <span>
+              <i className="material-icons">access_time</i>
+              {event.time_string}
+            </span>
+            <span>
+              <i className="material-icons">location_on</i>
+              <a href="#">{event.geo_string}</a>
+            </span>
+          </div>
           <div>{event.description}</div>
           <div>features</div>
         </div>

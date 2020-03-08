@@ -1,3 +1,5 @@
+import React from "react";
+
 var moment = require("moment");
 
 const events = {
@@ -27,19 +29,31 @@ const events = {
 
 export const getWelcomeText = () =>
   fetch("http://localhost:3000/api").then(res => res.text());
-export const getEvent = id => {
-  const fmt_full = "MMM D 'YY h:mma";
-  const fmt_time = "h:mma";
+export const getEvent = (id, opts) => {
   var event = events[id];
+  opts = opts || {
+    show_year: true
+  };
   var { timestart, timeend } = event;
+
+  var fmt_day = opts.show_year ? "MMM D 'YY" : "MMM D";
+  var fmt_time = "h:mma";
+
+  const getTime = (t, id) => (
+    <i key={id}>
+      <b>{t.format(fmt_day)}</b>
+      {" · " + t.format(fmt_time)}
+    </i>
+  );
+
   return Object.assign(
     {
       id: id,
       geo_string: "1234 Billy St., New York, New York",
       time_string:
         timestart.isSame(timeend, "day") === true
-          ? timestart.format(fmt_full) + " - " + timeend.format(fmt_time)
-          : timestart.format(fmt_full) + " - " + timeend.format(fmt_full)
+          ? [getTime(timestart), " - ", timeend.format(fmt_time)]
+          : [getTime(timestart, "start"), " - ", getTime(timeend, "end")]
     },
     event
   );

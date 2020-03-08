@@ -28,5 +28,29 @@
       line-height: 40px;
       font-weight: 500;
     }
+
+    .date_loc {
+      display: flex;
+      padding: 10px 0px;
+      font-size: 14px;
+    }
+
+    .date_loc > span {
+      display: flex;
+      margin-right: 20px;
+      white-space: pre;
+
+      > i {
+        display: flex;
+        align-items: center;
+      }
+
+      > .material-icons {
+        margin-right: 5px;
+        color: rgba(1, 1, 1, 0.25);
+        font-size: 18px;
+        cursor: default;
+      }
+    }
   }
 }

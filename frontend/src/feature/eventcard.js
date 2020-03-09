@@ -1,15 +1,24 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
+import FakeLink from "@feature/fakelink";
+import Thumbnail from "@feature/thumbnail";
 
 import "@style/eventcard.scss";
 
 const EventCard = props => {
-  const { id, title, time_string, geo_string } = props.event;
+  const {
+    id,
+    title,
+    time_string,
+    geo_string,
+    img_url,
+    geolocation
+  } = props.event;
   return (
-    <div id={id} className={`f-event-card ${props.type}`}>
+    <div className={`f-event-card ${props.type}`}>
       <div className="ec-body">
-        <img className="thumbnail" />
+        <Thumbnail src={img_url} />
         <div className="ec-mid-body">
           <Link className="title" to={`/e/${id}`}>
             {title}
@@ -20,7 +29,11 @@ const EventCard = props => {
           </span>
           <span className="location">
             <i className="material-icons">location_on</i>
-            {geo_string}
+            <FakeLink
+              title={props.location_title}
+              onClick={() => props.onLocationClick(geo_string, ...geolocation)}
+              text={geo_string}
+            />
           </span>
         </div>
         <div className="ec-right-body">
@@ -29,6 +42,10 @@ const EventCard = props => {
       </div>
     </div>
   );
+};
+
+EventCard.defaultProps = {
+  onLocationClick: () => {}
 };
 
 export default EventCard;

@@ -6,6 +6,8 @@ import { getEvent } from "@db";
 import Body from "@feature/body";
 import Map from "@feature/map";
 import Header from "@feature/header";
+import { TagList } from "@feature/tag";
+import Thumbnail from "@feature/thumbnail";
 
 import "@style/eventview.scss";
 
@@ -16,8 +18,8 @@ const EventList = withRouter(props => {
       <Header />
       <Body>
         <div className="body-left">
-          <Map />
-          <img className="thumbnail" />
+          <Map center={event.geolocation} />
+          <Thumbnail src={event.img_url} />
         </div>
         <div className="body-right">
           <div className="title">{event.title}</div>
@@ -31,8 +33,16 @@ const EventList = withRouter(props => {
               <a href="#">{event.geo_string}</a>
             </span>
           </div>
-          <div>{event.description}</div>
-          <div>features</div>
+          <div className="description">{event.description}</div>
+          <TagList
+            list={[
+              "popcorn",
+              "free",
+              "interactive",
+              "SEB",
+              "Birds of Prey and the Fantabulous Emancipation of one Harley Quinn"
+            ]}
+          />
         </div>
       </Body>
     </div>

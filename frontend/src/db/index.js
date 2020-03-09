@@ -8,14 +8,17 @@ const events = {
     description: "",
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 10000000),
-    geolocation: [0, 0]
+    geolocation: [39.254055, -76.711789],
+    img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png"
   },
   "2": {
     title: "Movie Night - The Evil Dead",
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 100000000),
-    geolocation: [0, 0]
+    geolocation: [40.7295174, -73.9986549],
+    img_url:
+      "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA"
   },
   "3": {
     title:
@@ -23,12 +26,18 @@ const events = {
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 1000000000),
-    geolocation: [0, 0]
+    geolocation: [39.25479, -76.71184],
+    img_url:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg"
   }
 };
 
 export const getWelcomeText = () =>
   fetch("http://localhost:3000/api").then(res => res.text());
+
+// geolocation is stored at lat-long
+// mapBox uses long-lat
+// google uses lat-long
 export const getEvent = (id, opts) => {
   var event = events[id];
   opts = opts || {
@@ -39,8 +48,8 @@ export const getEvent = (id, opts) => {
   var fmt_day = opts.show_year ? "MMM D 'YY" : "MMM D";
   var fmt_time = "h:mma";
 
-  const getTime = (t, id) => (
-    <i key={id}>
+  const getTime = t => (
+    <i key={t}>
       <b>{t.format(fmt_day)}</b>
       {" · " + t.format(fmt_time)}
     </i>
@@ -53,7 +62,7 @@ export const getEvent = (id, opts) => {
       time_string:
         timestart.isSame(timeend, "day") === true
           ? [getTime(timestart), " - ", timeend.format(fmt_time)]
-          : [getTime(timestart, "start"), " - ", getTime(timeend, "end")]
+          : [getTime(timestart), " - ", getTime(timeend)]
     },
     event
   );

@@ -1,7 +1,11 @@
 $shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-$transition: cubic-bezier(0.4, 0, 0.2, 1);
+$transition: cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 
 // HEADER
 $header-height: 50px;
 $logo-margin-left: 20px;
 $logo-width: 48px;
+
+// EVENTCARD
+$eventcard-background-color: #fafafa;
+$eventcard-border: 1px solid $eventcard-background-color;

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { withRouter } from "react-router-dom";
 import { getEvent } from "@db";
 
 import Body from "@feature/body";
-import Map from "@feature/map";
+import Map, { latAdd } from "@feature/map";
 import Header from "@feature/header";
 import { TagList } from "@feature/tag";
 import Thumbnail from "@feature/thumbnail";
@@ -18,8 +18,12 @@ const EventList = withRouter(props => {
       <Header />
       <Body>
         <div className="body-left">
-          <Map center={event.geolocation} />
           <Thumbnail src={event.img_url} />
+          <Map
+            center={event.geolocation.slice().reverse()}
+            zoom={13}
+            interactive={false}
+          />
         </div>
         <div className="body-right">
           <div className="title">{event.title}</div>

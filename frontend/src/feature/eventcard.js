@@ -20,7 +20,7 @@ const EventCard = props => {
       <div className="ec-body">
         <Thumbnail src={img_url} />
         <div className="ec-mid-body">
-          <Link className="title" to={`/e/${id}`}>
+          <Link className="title" title={title} to={`/e/${id}`}>
             {title}
           </Link>
           <span className="time">

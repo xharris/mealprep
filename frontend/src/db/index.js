@@ -9,6 +9,7 @@ const events = {
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 10000000),
     geolocation: [39.254055, -76.711789],
+    geo_string: "The Quad, Baltimore, MD 21250",
     img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png"
   },
   "2": {
@@ -16,6 +17,7 @@ const events = {
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 100000000),
+    geo_string: "Washington Square Park",
     geolocation: [40.7295174, -73.9986549],
     img_url:
       "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA"
@@ -26,6 +28,7 @@ const events = {
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
     timestart: moment(Date.now()),
     timeend: moment(Date.now() + 1000000000),
+    geo_string: "Lecture Hall I, Baltimore, MD",
     geolocation: [39.25479, -76.71184],
     img_url:
       "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg"
@@ -58,7 +61,6 @@ export const getEvent = (id, opts) => {
   return Object.assign(
     {
       id: id,
-      geo_string: "1234 Billy St., New York, New York",
       time_string:
         timestart.isSame(timeend, "day") === true
           ? [getTime(timestart), " - ", timeend.format(fmt_time)]

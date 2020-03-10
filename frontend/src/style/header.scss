@@ -56,7 +56,7 @@
     z-index: -15;
     background: transparent;
 
-    transition: all $transition 0.2s;
+    transition: all $transition;
   }
 
   .subcontainer {
@@ -71,7 +71,7 @@
     font-size: 18px;
     font-weight: 500;
 
-    transition: all $transition 0.2s;
+    transition: all $transition;
   }
 
   .subtext {
@@ -79,7 +79,7 @@
     overflow: hidden;
     font-size: 12px;
     line-height: 18px;
-    transition: all $transition 0.2s;
+    transition: all $transition;
   }
 
   &:hover .subtext,
@@ -96,7 +96,7 @@
     right: 10px;
     bottom: -75%;
     z-index: -10;
-    transition: all $transition 0.2s;
+    transition: all $transition;
   }
 
   &:hover img,

@@ -40,7 +40,11 @@ const EventList = withRouter(props => {
           <Search />
           <div className="event-card-list">
             {events.map(e => {
-              if (bounds && bounds.contains(e.geolocation.slice().reverse()))
+              if (
+                bounds &&
+                (bounds == "all" ||
+                  bounds.contains(e.geolocation.slice().reverse()))
+              )
                 return (
                   <EventCard
                     key={e.id}

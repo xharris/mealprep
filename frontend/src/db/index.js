@@ -69,3 +69,81 @@ export const getEvent = (id, opts) => {
     event
   );
 };
+
+export const getAnnouncements = event_id => {
+  return [
+    {
+      id: "1",
+      event_id: "3",
+      type: "text",
+      value: "Let's just have a good time ok?",
+      date_created: moment(Date.now())
+    },
+    {
+      id: "2",
+      event_id: "3",
+      type: "poll",
+      title: "Food of choice?",
+      votes: 4,
+      max_votes: 2,
+      choices: [
+        { text: "Hot dogs", votes: 3 },
+        { text: "Burgers", votes: 1 },
+        { text: "Panini", votes: 0 }
+      ],
+      user_voted: {},
+      date_created: moment(Date.now() + 1000000000)
+    },
+    {
+      id: "3",
+      event_id: "3",
+      type: "poll",
+      title: "Need a ride?",
+      votes: 6,
+      max_votes: 1,
+      choices: [
+        { text: "Yes", votes: 3 },
+        { text: "No", votes: 1 },
+        { text: "Maybe", votes: 0 }
+      ],
+      user_voted: {},
+      date_created: moment(Date.now() + 1000000000)
+    },
+    {
+      id: "4",
+      event_id: "3",
+      type: "poll",
+      title:
+        "On a scale from 0 to 10, how excited are you really? Be totally honest ok.",
+      votes: 10,
+      max_votes: 1,
+      choices: [
+        {
+          text: "0 (I'm just here for a good time but also the free food)",
+          votes: 0
+        },
+        { text: "1", votes: 0 },
+        { text: "2", votes: 0 },
+        { text: "3", votes: 1 },
+        { text: "4", votes: 0 },
+        { text: "5", votes: 0 },
+        { text: "6", votes: 0 },
+        { text: "7", votes: 0 },
+        { text: "8", votes: 0 },
+        { text: "9", votes: 0 },
+        { text: "10", votes: 9 }
+      ],
+      user_voted: {
+        "1": ["3"]
+      },
+      date_created: moment(Date.now() + 1000000000)
+    }
+  ];
+};
+
+export const getUser = user_id => {
+  return {
+    id: "1",
+    events_owned: ["3"]
+  };
+};

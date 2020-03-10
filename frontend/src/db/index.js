@@ -147,3 +147,36 @@ export const getUser = user_id => {
     events_owned: ["3"]
   };
 };
+
+const comments = [
+  { id: "1", event_id: "3", user_id: "1", value: "Wowie!" },
+  {
+    id: "2",
+    event_id: "3",
+    user_id: "1",
+    value: `Somebody once told me the world is gonna roll me
+  I ain't the sharpest tool in the shed
+  She was looking kind of dumb with her finger and her thumb
+  In the shape of an "L" on her forehead
+  Well the years start coming and they don't stop coming
+  Fed to the rules and I hit the ground running
+  Didn't make sense not to live for fun
+  Your brain gets smart but your head gets dumb
+  So much to do, so much to see
+  So what's wrong with taking the back streets?
+  You'll never know if you don't go
+  You'll never shine if you don't glow
+  Hey now, you're an all-star, get your game on, go play
+  Hey now, you're a rock star, get the show on, get paid
+  And all that glitters is gold
+  Only shooting stars break the mold`
+  },
+  { id: "3", event_id: "3", user_id: "1", value: "Zowie!", reply_to: "1" }
+];
+
+export const getComments = ({ event_id, comment_id, reply_to_id }) => {
+  if (reply_to_id) return comments.filter(c => reply_to_id == c.reply_to);
+  if (comment_id) return comments.filter(c => c.id == comment_id);
+  if (event_id)
+    return comments.filter(c => !c.reply_to && event_id == c.event_id);
+};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
-import { getEvent, getAnnouncements } from "@db";
+import { getEvent, getAnnouncements, getComments } from "@db";
 import authContext from "@db/authContext";
 
 import Body from "@feature/body";
@@ -37,18 +37,19 @@ const Poll = props => {
   const [checked, setChecked] = useState(0);
   const [votes, setVotes] = useState({});
 
-  useEffect(() => {
-    props.choices.forEach((c, i) => setVotes({ ...votes, [i]: false }));
-  }, []);
-
   const onCheck = e => {
-    setVotes({ ...votes, [e.target.value]: true });
-    e.target.checked ? setChecked(checked + 1) : setChecked(checked - 1);
+    if (max_votes === 1) {
+      setVotes({ [e.target.value]: e.target.checked === true });
+      setChecked(1);
+    } else {
+      setVotes({ ...votes, [e.target.value]: e.target.checked === true });
+      e.target.checked === true
+        ? setChecked(checked + 1)
+        : setChecked(checked - 1);
+    }
   };
 
   const submit = e => {
-    console.log(votes);
-    // add votes
     e.preventDefault();
   };
 
@@ -75,35 +76,39 @@ const Poll = props => {
               </button>
               {props.choices.map((c, i) => {
                 const choice_id = i.toString(); // NOTE: change to c.id later
-                const votes = (c.votes / props.votes) * 100;
+                const vote_percent = (c.votes / props.votes) * 100;
                 return (
                   <div
                     key={choice_id}
                     className={`choice ${
-                      voted && voted.includes(choice_id) ? " voted" : ""
+                      (voted && voted.includes(choice_id)) ||
+                      votes[choice_id] === true
+                        ? " voted"
+                        : ""
                     }`}
                   >
                     {voted ? null : (
                       <input
                         type={max_votes == 1 ? "radio" : "checkbox"}
                         name={`poll-${props.id}`}
-                        value={i}
+                        value={choice_id}
                         onChange={onCheck}
                       />
                     )}
                     <div
                       className="right"
                       style={{ left: voted ? 0 : 20 }}
-                      title={`"${c.text}" (${parseInt(votes * 10) / 10}%)`}
+                      title={`"${c.text}" (${parseInt(vote_percent * 10) /
+                        10}%)`}
                     >
                       <span className="text">{c.text}</span>
                       <div className="votes-container">
                         <div
                           className="votes-fill"
-                          style={{ width: votes + "%" }}
+                          style={{ width: vote_percent + "%" }}
                         />
                         <div className="votes-percent">
-                          {parseInt(votes) + "%"}
+                          {parseInt(vote_percent) + "%"}
                         </div>
                       </div>
                     </div>
@@ -118,16 +123,35 @@ const Poll = props => {
   );
 };
 
-const EventList = withRouter(props => {
-  const event = getEvent(props.match.params.eventid);
+const Comment = ({ comment_id, value }) => {
+  const replies = getComments({ reply_to_id: comment_id });
+  return (
+    <div className="comment">
+      <div>{value}</div>
+      <div className="replies">
+        {replies.map(c => (
+          <Comment key={c.id} comment_id={c.id} value={c.value} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-  const announcements = getAnnouncements(props.match.params.eventid);
+const EventList = withRouter(props => {
+  const event_id = props.match.params.eventid;
+  const event = getEvent(event_id);
+  const comments = getComments({ event_id });
+  const announcements = getAnnouncements(event_id);
   const el_announcements = announcements
     .filter(a => a.event_id == event.id)
     .map(a => {
       if (a.type === "text") return <Text key={a.id} {...a} />;
       if (a.type === "poll") return <Poll key={a.id} {...a} />;
     });
+
+  const onCommentSubmit = e => {
+    e.preventDefault();
+  };
 
   return (
     <div className="p-event-view">
@@ -177,6 +201,30 @@ const EventList = withRouter(props => {
               <div className="list">{el_announcements}</div>
             </div>
           )}
+          <div className="comments">
+            <span>Comments</span>
+            <form className="input-container" onSubmit={onCommentSubmit}>
+              <textarea
+                type="text"
+                placeholder="Type your comment here..."
+                onKeyDown={e => {
+                  var el = e.target;
+                  setTimeout(function() {
+                    el.style.cssText = "height:auto; padding:0";
+                    // for box-sizing other than "content-box" use:
+                    // el.style.cssText = '-moz-box-sizing:content-box';
+                    el.style.cssText = "height:" + el.scrollHeight + "px";
+                  }, 0);
+                }}
+              />
+              <button type="submit">Submit</button>
+            </form>
+            <div className="list">
+              {comments.map(c => (
+                <Comment key={c.id} comment_id={c.id} value={c.value} />
+              ))}
+            </div>
+          </div>
         </div>
       </Body>
     </div>

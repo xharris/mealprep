@@ -60,7 +60,8 @@
       padding: 10px 0px;
     }
 
-    .announcements {
+    .announcements,
+    .comments {
       position: relative;
       border: 1px solid #bdbdbd;
       border-radius: 6px;
@@ -78,7 +79,9 @@
         font-size: 14px;
         font-weight: 600;
       }
+    }
 
+    .announcements {
       .list {
         display: flex;
         align-items: center;
@@ -179,7 +182,7 @@
             }
 
             &.voted .votes-fill {
-              background-color: $voted-fill;
+              background-color: scale-color($voted-fill, $lightness: 30%);
             }
 
             .votes-percent {
@@ -190,6 +193,24 @@
               color: #212121;
             }
           }
+        }
+      }
+    } // announcements
+
+    .comments {
+      .input-container {
+        display: flex;
+        background-color: #e0e0e0;
+        border-radius: 3px;
+
+        textarea {
+          width: 100%;
+          background: transparent;
+          border: none;
+          padding: 3px 5px;
+          font-size: 14px;
+          resize: none;
+          max-height: 200px;
         }
       }
     }

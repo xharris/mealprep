@@ -57,7 +57,6 @@ const factory = (coordinates, point_count, getLeaves) => {
 };
 
 const MapContent = props => {
-  console.log(props.events);
   return (
     <Cluster ClusterMarkerFactory={factory}>
       {props.events.map((e, i) => (
@@ -149,7 +148,7 @@ const Map = props => {
         navigator.geolocation.getCurrentPosition(position => {
           const { latitude, longitude } = position.coords;
           if (props.onGeoLoad) props.onGeoLoad([longitude, latitude]);
-          if (!centerChanged) setCenter([longitude, latitude]);
+          if (!center) setCenter([longitude, latitude]);
         });
       }}
       onDrag={boundsEvent}
@@ -187,7 +186,7 @@ const Map = props => {
         navigator.geolocation.getCurrentPosition(position => {
           const { latitude, longitude } = position.coords;
           if (props.onGeoLoad) props.onGeoLoad([longitude, latitude]);
-          if (!centerChanged) setCenter([longitude, latitude]);
+          if (!center) setCenter([longitude, latitude]);
         });
       }}
       onMoveEnd={props.onMoveEnd}

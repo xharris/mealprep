@@ -44,9 +44,7 @@ const Home = () => {
           onLoad={map => setMap(map)}
           onGeoLoad={_center => {
             if (!center) {
-              console.log(_center);
               setTransition("easeTo");
-              // setCenter(_center);
             }
           }}
         />

@@ -128,7 +128,10 @@ const Comment = ({ comment_id, value, is_reply }) => {
   return (
     <authContext.Consumer>
       {({ user }) => [
-        <div className={`comment ${is_reply ? "is_reply" : ""}`}>
+        <div
+          key={comment_id + "-div"}
+          className={`comment ${is_reply ? "is_reply" : ""}`}
+        >
           <Thumbnail src={user.img_url} type={"rounded"} />
           <div className="value">
             <span className="username">{user.full_name}</span>
@@ -137,7 +140,7 @@ const Comment = ({ comment_id, value, is_reply }) => {
         </div>,
         replies.map(c => (
           <Comment
-            key={c.id}
+            key={c.id + "-reply"}
             comment_id={c.id}
             value={c.value}
             is_reply={true}
@@ -231,7 +234,7 @@ const EventList = withRouter(props => {
               <button type="submit">Submit</button>
             </form>
             <div className="list">
-              {comments.map(c => (
+              {comments.map((c, i) => (
                 <Comment key={c.id} comment_id={c.id} value={c.value} />
               ))}
             </div>

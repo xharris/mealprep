@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import { getEvent, getAnnouncements, getComments } from "@db";
 import authContext from "@db/authContext";
@@ -123,17 +123,28 @@ const Poll = props => {
   );
 };
 
-const Comment = ({ comment_id, value }) => {
+const Comment = ({ comment_id, value, is_reply }) => {
   const replies = getComments({ reply_to_id: comment_id });
   return (
-    <div className="comment">
-      <div>{value}</div>
-      <div className="replies">
-        {replies.map(c => (
-          <Comment key={c.id} comment_id={c.id} value={c.value} />
-        ))}
-      </div>
-    </div>
+    <authContext.Consumer>
+      {({ user }) => [
+        <div className={`comment ${is_reply ? "is_reply" : ""}`}>
+          <Thumbnail src={user.img_url} type={"rounded"} />
+          <div className="value">
+            <span className="username">{user.full_name}</span>
+            {value}
+          </div>
+        </div>,
+        replies.map(c => (
+          <Comment
+            key={c.id}
+            comment_id={c.id}
+            value={c.value}
+            is_reply={true}
+          />
+        ))
+      ]}
+    </authContext.Consumer>
   );
 };
 

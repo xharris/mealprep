@@ -16,7 +16,7 @@ const S = {
 };
 
 const Thumbnail = props => (
-  <S.Thumbnail className={`f-thumbnail ${props.type}`} {...props}>
+  <S.Thumbnail className={`f-thumbnail ${props.type || "square"}`} {...props}>
     {Array.isArray(props.src) ? (
       props.src.map((src, i) => <S.Image className="image" key={i} src={src} />)
     ) : (

@@ -8,6 +8,10 @@ export class MomentUtil {
   }
 }
 
+export const wrapX = (x, x_min, x_max) =>
+  ((((x - x_min) % (x_max - x_min)) + (x_max - x_min)) % (x_max - x_min)) +
+  x_min;
+
 export class Meal {
   constructor(db_info) {
     this.info = db_info;

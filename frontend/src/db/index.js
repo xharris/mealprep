@@ -2,8 +2,9 @@ import React from "react";
 
 var moment = require("moment");
 
-const events = {
-  "1": {
+const events = () => [
+  {
+    id: "1",
     title: "Quadmania",
     description: "",
     timestart: moment(Date.now()),
@@ -12,7 +13,8 @@ const events = {
     geo_string: "The Quad, Baltimore, MD 21250",
     img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png"
   },
-  "2": {
+  {
+    id: "2",
     title: "Movie Night - The Evil Dead",
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
     timestart: moment(Date.now()),
@@ -22,7 +24,8 @@ const events = {
     img_url:
       "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA"
   },
-  "3": {
+  {
+    id: "3",
     title:
       "Movie Night - Birds of Prey and the Fantabulous Emancipation of one Harley Quinn",
     description: "Join (seb) for our Weekly Movie! Fridays are interactive.",
@@ -33,19 +36,16 @@ const events = {
     img_url:
       "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg"
   }
-};
+];
 
 export const getWelcomeText = () =>
   fetch("http://localhost:3000/api").then(res => res.text());
 
-// geolocation is stored at lat-long
-// mapBox uses long-lat
-// google uses lat-long
-export const getEvent = (id, opts) => {
-  var event = events[id];
+const formatEvent = (event, opts) => {
   opts = opts || {
     show_year: true
   };
+
   var { timestart, timeend } = event;
 
   var fmt_day = opts.show_year ? "MMM D 'YY" : "MMM D";
@@ -60,7 +60,7 @@ export const getEvent = (id, opts) => {
 
   return Object.assign(
     {
-      id: id,
+      id: event.id,
       time_string:
         timestart.isSame(timeend, "day") === true
           ? [getTime(timestart), " - ", timeend.format(fmt_time)]
@@ -68,6 +68,29 @@ export const getEvent = (id, opts) => {
     },
     event
   );
+};
+
+export const getEvents = () => events().map(e => formatEvent(e));
+
+export const getUserEvents = ({ user_id }) => {
+  const user = getUser(user_id);
+  return Object.keys(user.event_status).map(event_id => getEvent(event_id));
+};
+
+// geolocation is stored at lat-long
+// mapBox uses long-lat
+// google uses lat-long
+export const getEvent = (id, opts) => {
+  var event_list = events();
+  var event;
+  for (var e = 0; e < event_list.length; e++) {
+    if (event_list[e].id === id) {
+      event = event_list[e];
+      break;
+    }
+  }
+
+  return formatEvent(event, opts);
 };
 
 export const getAnnouncements = event_id => {
@@ -142,10 +165,17 @@ export const getAnnouncements = event_id => {
 };
 
 export const getUser = user_id => {
-  return {
+  var data = {
     id: "1",
-    events_owned: ["3"]
+    full_name: "Bob Dillington",
+    img_url: "https://avatarfiles.alphacoders.com/146/146703.png",
+    event_status: {
+      "3": "owned",
+      "2": "cant",
+      "1": "going"
+    }
   };
+  return data;
 };
 
 const comments = [

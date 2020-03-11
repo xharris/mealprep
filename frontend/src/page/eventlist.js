@@ -2,10 +2,11 @@
  * /events/global
  * /events/me
  */
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { withRouter } from "react-router-dom";
-import { getEvent } from "@db";
+import { getEvents, getUserEvents } from "@db";
+import authContext from "@db/authContext";
 
 import Header from "@feature/header";
 import Body from "@feature/body";
@@ -16,11 +17,19 @@ import EventCard from "@feature/eventcard";
 import "@style/eventlist.scss";
 
 const EventList = withRouter(props => {
-  const events = [getEvent("1"), getEvent("2"), getEvent("3")];
+  const user = useContext(authContext);
+  const [events, setEvents] = useState([]);
 
   const [zoom, setZoom] = useState(9);
   const [currLoc, setCurrLoc] = useState(null);
   const [bounds, setBounds] = useState(null);
+
+  useEffect(() => {
+    const route = props.location.pathname;
+    if (route.startsWith("/events/me"))
+      setEvents(getUserEvents({ user_id: user.id }));
+    else setEvents(getEvents());
+  }, [props.location]);
 
   return (
     <div className="p-event-list">

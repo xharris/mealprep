@@ -85,4 +85,16 @@
       font-size: 12px;
     }
   }
+
+  .event-status {
+    &.going {
+      color: #aed581;
+    }
+    &.owned {
+      color: #ffca28;
+    }
+    &.cancel {
+      color: #ef9a9a;
+    }
+  }
 }

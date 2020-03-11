@@ -11,7 +11,7 @@ import img_map_marker from "@image/map_marker.png";
 import "@style/map.scss";
 import Thumbnail from "./thumbnail";
 
-const DISABLE_MAP = true;
+const DISABLE_MAP = false;
 
 var MapBox, DeadMapBox;
 
@@ -56,13 +56,16 @@ const factory = (coordinates, point_count, getLeaves) => {
   );
 };
 
-const MapContent = props => (
-  <Cluster ClusterMarkerFactory={factory}>
-    {props.events.map((e, i) => (
-      <ClusterMarker key={i} coordinates={e.geolocation} events={[e]} />
-    ))}
-  </Cluster>
-);
+const MapContent = props => {
+  console.log(props.events);
+  return (
+    <Cluster ClusterMarkerFactory={factory}>
+      {props.events.map((e, i) => (
+        <ClusterMarker key={i} coordinates={e.geolocation} events={[e]} />
+      ))}
+    </Cluster>
+  );
+};
 
 const Map = props => {
   const parseCoord = c => c.slice().reverse();
@@ -81,8 +84,9 @@ const Map = props => {
     }
   }, [props.center]);
 
-  // user's current location is found. center there unless the map has already been changed
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (props.onLoad) props.onLoad(map);
+  }, [map]);
 
   // map bounds change
   const boundsEvent = _map => {
@@ -91,7 +95,17 @@ const Map = props => {
   };
 
   useEffect(() => {
-    props.onBoundsChanged && bounds && props.onBoundsChanged(bounds);
+    if (props.events)
+      setEvents(
+        props.events.map(e => ({
+          ...e,
+          geolocation: parseCoord(e.geolocation)
+        }))
+      );
+  }, [props.events]);
+
+  useEffect(() => {
+    props.onBoundsChanged && bounds && props.onBoundsChanged(bounds, center);
   }, [bounds]);
 
   useEffect(() => {
@@ -131,19 +145,11 @@ const Map = props => {
       renderChildrenInPortal={true}
       onStyleLoad={(map, e) => {
         setMap(map);
-        if (props.events)
-          setEvents(
-            props.events.map(e => ({
-              ...e,
-              geolocation: parseCoord(e.geolocation)
-            }))
-          );
         // get user's center for when a default center isn't set
         navigator.geolocation.getCurrentPosition(position => {
-          if (!centerChanged) {
-            const { latitude, longitude } = position.coords;
-            setCenter([longitude, latitude]);
-          }
+          const { latitude, longitude } = position.coords;
+          if (props.onGeoLoad) props.onGeoLoad([longitude, latitude]);
+          if (!centerChanged) setCenter([longitude, latitude]);
         });
       }}
       onDrag={boundsEvent}
@@ -151,6 +157,7 @@ const Map = props => {
       onPitch={boundsEvent}
       onRotate={boundsEvent}
       onResize={boundsEvent}
+      onMoveEnd={props.onMoveEnd}
     >
       {props.controls && (
         <>
@@ -166,7 +173,9 @@ const Map = props => {
       style="mapbox://styles/mapbox/streets-v11"
       center={center || undefined}
       zoom={zoom}
-      onStyleLoad={() => {
+      movingMethod={props.fly_transition && centerChanged ? "flyTo" : "jumpTo"}
+      onStyleLoad={(map, e) => {
+        setMap(map);
         if (props.events)
           setEvents(
             props.events.map(e => ({
@@ -174,16 +183,24 @@ const Map = props => {
               geolocation: parseCoord(e.geolocation)
             }))
           );
+        // get user's center for when a default center isn't set
+        navigator.geolocation.getCurrentPosition(position => {
+          const { latitude, longitude } = position.coords;
+          if (props.onGeoLoad) props.onGeoLoad([longitude, latitude]);
+          if (!centerChanged) setCenter([longitude, latitude]);
+        });
       }}
+      onMoveEnd={props.onMoveEnd}
     >
-      {events && <MapContent />}
+      {events && <MapContent events={events} />}
     </DeadMapBox>
   );
 };
 
 Map.defaultProps = {
   zoom: 10,
-  interactive: true
+  interactive: true,
+  onMoveEnd: () => {}
 };
 
 export default Map;

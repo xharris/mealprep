@@ -11,7 +11,7 @@ import img_map_marker from "@image/map_marker.png";
 import "@style/map.scss";
 import Thumbnail from "./thumbnail";
 
-const DISABLE_MAP = false;
+const DISABLE_MAP = true;
 
 var MapBox, DeadMapBox;
 

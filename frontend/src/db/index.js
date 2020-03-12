@@ -2,6 +2,17 @@ import React from "react";
 
 var moment = require("moment");
 
+const tags = () => [
+  { id: "1", value: "popcorn" },
+  { id: "2", value: "free" },
+  { id: "3", value: "interactive" },
+  { id: "4", value: "SEB" },
+  {
+    id: "5",
+    value: "Birds of Prey and the Fantabulous Emancipation of one Harley Quinn"
+  }
+];
+
 const events = () => [
   {
     id: "1",
@@ -11,7 +22,8 @@ const events = () => [
     timeend: moment(Date.now() + 10000000),
     geolocation: [39.254055, -76.711789],
     geo_string: "The Quad, Baltimore, MD 21250",
-    img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png"
+    img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png",
+    tags: ["2", "3", "4"]
   },
   {
     id: "2",
@@ -21,6 +33,8 @@ const events = () => [
     timeend: moment(Date.now() + 100000000),
     geo_string: "Washington Square Park",
     geolocation: [40.7295174, -73.9986549],
+    tags: ["1", "2"],
+    users_can_invite: true,
     img_url:
       "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA"
   },
@@ -33,6 +47,7 @@ const events = () => [
     timeend: moment(Date.now() + 1000000000),
     geo_string: "Lecture Hall I, Baltimore, MD",
     geolocation: [39.25479, -76.71184],
+    tags: ["1", "2", "3", "4", "5"],
     img_url:
       "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg"
   }
@@ -210,3 +225,5 @@ export const getComments = ({ event_id, comment_id, reply_to_id }) => {
   if (event_id)
     return comments.filter(c => !c.reply_to && event_id == c.event_id);
 };
+
+export const getTag = id => tags().filter(t => t.id == id)[0];

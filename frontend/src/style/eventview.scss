@@ -33,13 +33,12 @@
     }
 
     .date_loc {
-      display: flex;
       padding: 10px 0px;
       font-size: 14px;
     }
 
     .date_loc > span {
-      display: flex;
+      display: inline-flex;
       margin-right: 20px;
       white-space: pre;
 
@@ -56,8 +55,29 @@
       }
     }
 
-    .description {
-      padding: 10px 0px;
+    .description,
+    .f-tag-list,
+    .action-container {
+      padding-bottom: 10px;
+    }
+
+    .action-container {
+      display: flex;
+
+      > div {
+        margin-right: 20px;
+      }
+
+      .material-icons {
+        font-size: 18px;
+        line-height: 5px;
+        vertical-align: middle;
+      }
+
+      .btn-invite .material-icons {
+        font-size: 16px;
+        margin-right: 5px;
+      }
     }
 
     .announcements,
@@ -66,6 +86,7 @@
       /* border: 1px solid #bdbdbd; */
       border-radius: 6px;
       padding: 5px;
+      padding-left: 0px;
       margin-top: 40px;
 
       > span {
@@ -211,6 +232,7 @@
           font-size: 14px;
           resize: none;
           max-height: 200px;
+          height: auto;
         }
       }
 
@@ -250,6 +272,31 @@
         text-decoration: none;
         color: #37474f;
       }
+    } // comments
+  } // body-right
+} // p-event-view
+.modal-invitation {
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    > *:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
-}
+
+  .instructions {
+    font-weight: 500;
+    font-size: 14px;
+    font-style: italic;
+    color: #263238;
+  }
+
+  textarea {
+    min-width: 330px;
+    min-height: 24px;
+    max-width: 445px;
+    max-height: 140px;
+  }
+} // modal-invitation

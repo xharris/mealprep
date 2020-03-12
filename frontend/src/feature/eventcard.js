@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import authContext from "@db/authContext";
 
+import { status_icon, status_string } from "@feature/status";
 import FakeLink from "@feature/fakelink";
 import Thumbnail from "@feature/thumbnail";
 
@@ -15,15 +16,10 @@ const EventCard = props => {
     time_string,
     geo_string,
     img_url,
-    geolocation
+    geolocation,
+    users_can_invite
   } = props.event;
   const { user } = useContext(authContext);
-  const status_icon = {
-    going: "check_circle",
-    owned: "stars",
-    cant: "cancel"
-  };
-
   return (
     <div className={`f-event-card ${props.type}`}>
       <div className="ec-body">
@@ -47,15 +43,19 @@ const EventCard = props => {
         </div>
         <div className="ec-right-body">
           <i className="material-icons event-type">public</i>
-          {user &&
-            user.event_status[id] &&
-            status_icon[user.event_status[id]] && (
-              <i
-                className={`material-icons event-status ${user.event_status[id]}`}
-              >
-                {status_icon[user.event_status[id]]}
-              </i>
-            )}
+          {users_can_invite && (
+            <i className="material-icons" title="can invite other people">
+              mail_outline
+            </i>
+          )}
+          {user && user.event_status[id] && status_icon[user.event_status[id]] && (
+            <i
+              title={status_string[user.event_status[id]]}
+              className={`material-icons event-status ${user.event_status[id]}`}
+            >
+              {status_icon[user.event_status[id]]}
+            </i>
+          )}
         </div>
       </div>
     </div>

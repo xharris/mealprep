@@ -1,0 +1,32 @@
+.ReactModal__Overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ReactModal__Content {
+  position: relative !important;
+  top: initial !important;
+  left: initial !important;
+  right: initial !important;
+  bottom: initial !important;
+  padding-top: 35px !important;
+
+  .modal-close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 5px;
+  }
+
+  .modal-title {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-left: 20px;
+    font-weight: 800;
+    margin-top: 6px;
+  }
+}

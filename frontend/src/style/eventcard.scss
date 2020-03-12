@@ -93,8 +93,11 @@
     &.owned {
       color: #ffca28;
     }
-    &.cancel {
-      color: #ef9a9a;
+    &.maybe {
+      color: #ffb74d;
+    }
+    &.cant {
+      color: #e57373;
     }
   }
 }

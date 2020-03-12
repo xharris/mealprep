@@ -9,29 +9,3 @@
 .hide-link {
   text-decoration: none;
 }
-
-button {
-  font-size: 12px;
-  padding: 3px 6px;
-  border: none;
-  outline: none;
-  border-radius: 2px;
-  background-color: $button-bg-color;
-  color: white;
-  font-weight: 500;
-  border: 1px solid transparent;
-
-  transition: all $transition;
-
-  &:hover:not(:disabled) {
-    border-color: darken($button-bg-color, 20%);
-  }
-
-  &:active {
-    background-color: darken($button-bg-color, 20%);
-  }
-
-  &:disabled {
-    background-color: #90a4ae;
-  }
-}

@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { withRouter } from "react-router-dom";
 
 import { getEvent, getAnnouncements, getComments } from "@db";
 import authContext from "@db/authContext";
 
 import Body from "@feature/body";
-import Map, { latAdd } from "@feature/map";
+import Map from "@feature/map";
 import Header from "@feature/header";
 import { TagList } from "@feature/tag";
 import Thumbnail from "@feature/thumbnail";
+import Button from "@feature/button";
+import { status_color, status_string } from "@feature/status";
+import Modal from "@feature/modal";
+import Form from "@feature/form";
 
 import "@style/eventview.scss";
 
@@ -63,7 +67,7 @@ const Poll = props => {
             <span className="title">{props.title}</span>
             <DateCreated date_created={props.date_created} />
             <form className="choices" onSubmit={submit}>
-              <button
+              <Button
                 type="submit"
                 className="submit"
                 disabled={voted || checked !== max_votes}
@@ -73,7 +77,7 @@ const Poll = props => {
                   : checked !== max_votes
                   ? `Select ${max_votes - checked}`
                   : "Submit"}
-              </button>
+              </Button>
               {props.choices.map((c, i) => {
                 const choice_id = i.toString(); // NOTE: change to c.id later
                 const vote_percent = (c.votes / props.votes) * 100;
@@ -152,6 +156,7 @@ const Comment = ({ comment_id, value, is_reply }) => {
 };
 
 const EventList = withRouter(props => {
+  const { user } = useContext(authContext);
   const event_id = props.match.params.eventid;
   const event = getEvent(event_id);
   const comments = getComments({ event_id });
@@ -163,8 +168,20 @@ const EventList = withRouter(props => {
       if (a.type === "poll") return <Poll key={a.id} {...a} />;
     });
 
+  const [commentValue, setCommentValue] = useState("");
+  const [commentHeight, setCommentHeight] = useState("auto");
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+
   const onCommentSubmit = e => {
+    console.log(commentValue);
     e.preventDefault();
+  };
+
+  const onInvitationSubmit = e => {
+    const invitation_list = e.invitation_list
+      .split(",")
+      .map(i => i.trim().replace(/[\(\)\-\s]/g, ""));
+    console.log(invitation_list);
   };
 
   return (
@@ -199,16 +216,40 @@ const EventList = withRouter(props => {
               </a>
             </span>
           </div>
-          <div className="description">{event.description}</div>
-          <TagList
-            list={[
-              "popcorn",
-              "free",
-              "interactive",
-              "SEB",
-              "Birds of Prey and the Fantabulous Emancipation of one Harley Quinn"
-            ]}
-          />
+          {event.description && (
+            <div className="description">{event.description}</div>
+          )}
+          <TagList list={event.tags} />
+          <div className="action-container">
+            {user.event_status[event_id] !== "owned" && (
+              <div className="button-group">
+                {["going", "maybe", "cant"].map(s => (
+                  <Button
+                    key={s}
+                    title={status_string[s]}
+                    color={status_color[s]}
+                  >
+                    {user.event_status[event_id] === s ? (
+                      <i className="material-icons">check</i>
+                    ) : (
+                      s
+                    )}
+                  </Button>
+                ))}
+              </div>
+            )}
+            {(user.event_status[event_id] === "owned" ||
+              event.users_can_invite) && (
+              <Button
+                className="btn-invite"
+                onClick={() => {
+                  setInviteModalOpen(true);
+                }}
+              >
+                <i className="material-icons">mail_outline</i>Invite people
+              </Button>
+            )}
+          </div>
           {el_announcements.length > 0 && (
             <div className="announcements">
               <span>Announcements</span>
@@ -221,17 +262,14 @@ const EventList = withRouter(props => {
               <textarea
                 type="text"
                 placeholder="Type your comment here..."
+                onChange={e => setCommentValue(e.target.value.trim())}
+                style={{ height: commentHeight }}
                 onKeyDown={e => {
                   var el = e.target;
-                  setTimeout(function() {
-                    el.style.cssText = "height:auto; padding:0";
-                    // for box-sizing other than "content-box" use:
-                    // el.style.cssText = '-moz-box-sizing:content-box';
-                    el.style.cssText = "height:" + el.scrollHeight + "px";
-                  }, 0);
+                  setCommentHeight(el.scrollHeight - 6);
                 }}
               />
-              <button type="submit">Submit</button>
+              <Button type="submit">Submit</Button>
             </form>
             <div className="list">
               {comments.map((c, i) => (
@@ -241,6 +279,23 @@ const EventList = withRouter(props => {
           </div>
         </div>
       </Body>
+      <Modal
+        className="modal-invitation"
+        title={"Invite people"}
+        is_open={inviteModalOpen}
+        onClose={() => setInviteModalOpen(false)}
+      >
+        <Form onSubmit={onInvitationSubmit}>
+          <span className="instructions">
+            Enter a comma-seperated list of emails, phone numbers, or usernames
+          </span>
+          <textarea
+            name="invitation_list"
+            placeholder={"jimbo@gmail.com, (973) 123-3210, ..."}
+          ></textarea>
+          <Button type="submit">Submit</Button>
+        </Form>
+      </Modal>
     </div>
   );
 });

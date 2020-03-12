@@ -9,6 +9,10 @@
   margin: 4px;
   cursor: default;
   white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .f-tag-list {

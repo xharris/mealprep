@@ -3,15 +3,15 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "purecss";
 import "@style/index.scss";
 
-import { getUser } from "@db";
 import authContext from "@db/authContext";
 
 import Home from "@page/home";
 import EventList from "@page/eventlist";
 import EventView from "@page/eventview";
+import EventCreate from "@page/eventcreate";
 
 const App = () => {
-  const user = getUser();
+  const user = null; // getUser();
   return (
     <authContext.Provider value={{ user: user }}>
       <BrowserRouter className="app">
@@ -20,6 +20,7 @@ const App = () => {
           <Route path="/events/global" component={EventList} />
           <Route path="/events/me" component={EventList} />
           <Route path="/e/:eventid" component={EventView} />
+          <Route path="/create" component={EventCreate} />
         </Switch>
       </BrowserRouter>
     </authContext.Provider>

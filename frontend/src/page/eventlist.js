@@ -13,7 +13,9 @@ import Body from "@feature/body";
 import Map from "@feature/map";
 import Search from "@feature/search";
 import EventCard from "@feature/eventcard";
+import Button from "@feature/button";
 
+import "@style/button.scss";
 import "@style/eventlist.scss";
 
 const EventList = withRouter(props => {
@@ -29,7 +31,7 @@ const EventList = withRouter(props => {
     if (route.startsWith("/events/me"))
       setEvents(getUserEvents({ user_id: user.id }));
     else setEvents(getEvents());
-  }, [props.location]);
+  }, [props.location, user ? user.id : user]);
 
   return (
     <div className="p-event-list">
@@ -51,7 +53,7 @@ const EventList = withRouter(props => {
             {events.map(e => {
               if (
                 bounds &&
-                (bounds == "all" ||
+                (bounds === "all" ||
                   bounds.contains(e.geolocation.slice().reverse()))
               )
                 return (
@@ -69,6 +71,9 @@ const EventList = withRouter(props => {
             })}
           </div>
         </div>
+        <Button className="btn-create rounded" to="/create">
+          <i className="material-icons">add</i>
+        </Button>
       </Body>
     </div>
   );

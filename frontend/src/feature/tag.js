@@ -9,7 +9,7 @@ const Tag = props => {
   const text = value.length > 50 ? value.slice(0, 50) + "..." : value;
   return (
     <div title={value} className="f-tag">
-      {text}
+      {"#" + text}
     </div>
   );
 };

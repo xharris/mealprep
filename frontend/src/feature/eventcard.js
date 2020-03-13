@@ -17,7 +17,8 @@ const EventCard = props => {
     geo_string,
     img_url,
     geolocation,
-    users_can_invite
+    users_can_invite,
+    visibility
   } = props.event;
   const { user } = useContext(authContext);
   return (
@@ -42,7 +43,25 @@ const EventCard = props => {
           </span>
         </div>
         <div className="ec-right-body">
-          <i className="material-icons event-type">public</i>
+          {visibility === "public" && (
+            <i className="material-icons event-type" title="public event">
+              public
+            </i>
+          )}
+          {visibility === "invite" && (
+            <i
+              className="material-icons event-type"
+              title="must request invite"
+            >
+              how_to_reg
+            </i>
+          )}
+          {visibility === "private" && (
+            <i className="material-icons event-type" title="private event">
+              person
+            </i>
+          )}
+
           {users_can_invite && (
             <i className="material-icons" title="can invite other people">
               mail_outline

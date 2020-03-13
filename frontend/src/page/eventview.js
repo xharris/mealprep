@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
-import { getEvent, getAnnouncements, getComments } from "@db";
+import { getEvent, getAnnouncements, getComments, getUser } from "@db";
 import authContext from "@db/authContext";
 
 import Body from "@feature/body";
@@ -13,6 +13,7 @@ import Button from "@feature/button";
 import { status_color, status_string } from "@feature/status";
 import Modal from "@feature/modal";
 import Form from "@feature/form";
+import FakeLink from "@feature/fakelink";
 
 import "@style/eventview.scss";
 
@@ -60,7 +61,8 @@ const Poll = props => {
   return (
     <authContext.Consumer>
       {({ user }) => {
-        const voted = user_voted[user.id];
+        const logged_in = user !== null;
+        const voted = user ? user_voted[user.id] : false;
 
         return (
           <div className="announcement poll">
@@ -70,7 +72,7 @@ const Poll = props => {
               <Button
                 type="submit"
                 className="submit"
-                disabled={voted || checked !== max_votes}
+                disabled={voted || !logged_in || checked !== max_votes}
               >
                 {voted
                   ? `Voted`
@@ -91,9 +93,10 @@ const Poll = props => {
                         : ""
                     }`}
                   >
-                    {voted ? null : (
+                    {voted || !logged_in ? null : (
                       <input
-                        type={max_votes == 1 ? "radio" : "checkbox"}
+                        className="input"
+                        type={max_votes === 1 ? "radio" : "checkbox"}
                         name={`poll-${props.id}`}
                         value={choice_id}
                         onChange={onCheck}
@@ -127,31 +130,67 @@ const Poll = props => {
   );
 };
 
-const Comment = ({ comment_id, value, is_reply }) => {
+const Comment = ({ comment_id, user_id, value, is_reply }) => {
   const replies = getComments({ reply_to_id: comment_id });
+  const user = getUser(user_id);
+
+  const [commentBoxOpen, setCommentBoxOpen] = useState(false);
+  const [commentHeight, setCommentHeight] = useState("auto");
+  const onCommentSubmit = e => {
+    if (!user) {
+      console.log("please log in");
+    } else {
+      console.log(e.comment);
+    }
+  };
+
   return (
-    <authContext.Consumer>
-      {({ user }) => [
-        <div
-          key={comment_id + "-div"}
-          className={`comment ${is_reply ? "is_reply" : ""}`}
-        >
-          <Thumbnail src={user.img_url} type={"rounded"} />
-          <div className="value">
+    <>
+      <div
+        key={comment_id + "-div"}
+        className={`comment ${is_reply ? "is_reply" : ""}`}
+      >
+        <Thumbnail src={user.img_url} type={"rounded"} />
+        <div className="value">
+          <div className="text">
             <span className="username">{user.full_name}</span>
             {value}
           </div>
-        </div>,
-        replies.map(c => (
-          <Comment
-            key={c.id + "-reply"}
-            comment_id={c.id}
-            value={c.value}
-            is_reply={true}
+
+          <div className="comment-actions">
+            <FakeLink
+              text={commentBoxOpen ? "Cancel Reply" : "Reply"}
+              onClick={() => setCommentBoxOpen(!commentBoxOpen)}
+            />
+          </div>
+        </div>
+      </div>
+      {commentBoxOpen && (
+        <Form onSubmit={onCommentSubmit}>
+          <textarea
+            className="textarea"
+            type="text"
+            name="comment"
+            placeholder="Type your comment here..."
+            style={{ height: commentHeight }}
+            onKeyDown={e => {
+              var el = e.target;
+              setCommentHeight(el.scrollHeight - 6);
+            }}
           />
-        ))
-      ]}
-    </authContext.Consumer>
+          <Button type="submit">Submit</Button>
+        </Form>
+      )}
+      {replies.map(c => (
+        <Comment
+          key={c.id + "-reply"}
+          comment_id={c.id}
+          user_id={c.user_id}
+          value={c.value}
+          is_reply={true}
+        />
+      ))}
+    </>
   );
 };
 
@@ -162,25 +201,19 @@ const EventList = withRouter(props => {
   const comments = getComments({ event_id });
   const announcements = getAnnouncements(event_id);
   const el_announcements = announcements
-    .filter(a => a.event_id == event.id)
+    .filter(a => a.event_id === event.id)
     .map(a => {
       if (a.type === "text") return <Text key={a.id} {...a} />;
       if (a.type === "poll") return <Poll key={a.id} {...a} />;
+      return null;
     });
 
-  const [commentValue, setCommentValue] = useState("");
-  const [commentHeight, setCommentHeight] = useState("auto");
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
-
-  const onCommentSubmit = e => {
-    console.log(commentValue);
-    e.preventDefault();
-  };
 
   const onInvitationSubmit = e => {
     const invitation_list = e.invitation_list
       .split(",")
-      .map(i => i.trim().replace(/[\(\)\-\s]/g, ""));
+      .map(i => i.trim().replace(/[()\-\s]/g, ""));
     console.log(invitation_list);
   };
 
@@ -207,6 +240,7 @@ const EventList = withRouter(props => {
               <i className="material-icons">location_on</i>
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href={`https://www.google.com/maps/search/${event.geo_string.replace(
                   /\s/g,
                   "+"
@@ -221,7 +255,7 @@ const EventList = withRouter(props => {
           )}
           <TagList list={event.tags} />
           <div className="action-container">
-            {user.event_status[event_id] !== "owned" && (
+            {user && user.event_status[event_id] !== "owned" && (
               <div className="button-group">
                 {["going", "maybe", "cant"].map(s => (
                   <Button
@@ -229,7 +263,7 @@ const EventList = withRouter(props => {
                     title={status_string[s]}
                     color={status_color[s]}
                   >
-                    {user.event_status[event_id] === s ? (
+                    {user && user.event_status[event_id] === s ? (
                       <i className="material-icons">check</i>
                     ) : (
                       s
@@ -238,7 +272,7 @@ const EventList = withRouter(props => {
                 ))}
               </div>
             )}
-            {(user.event_status[event_id] === "owned" ||
+            {((user && user.event_status[event_id] === "owned") ||
               event.users_can_invite) && (
               <Button
                 className="btn-invite"
@@ -258,22 +292,14 @@ const EventList = withRouter(props => {
           )}
           <div className="comments">
             <span>Comments</span>
-            <form className="input-container" onSubmit={onCommentSubmit}>
-              <textarea
-                type="text"
-                placeholder="Type your comment here..."
-                onChange={e => setCommentValue(e.target.value.trim())}
-                style={{ height: commentHeight }}
-                onKeyDown={e => {
-                  var el = e.target;
-                  setCommentHeight(el.scrollHeight - 6);
-                }}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
             <div className="list">
               {comments.map((c, i) => (
-                <Comment key={c.id} comment_id={c.id} value={c.value} />
+                <Comment
+                  key={c.id}
+                  user_id={c.user_id}
+                  comment_id={c.id}
+                  value={c.value}
+                />
               ))}
             </div>
           </div>

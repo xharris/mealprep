@@ -1,4 +1,4 @@
-@import "~material-design-icons/iconfont/material-icons.css";
+@import "~material-design-icons-iconfont/dist/material-design-icons.css";
 @import "variables";
 
 .app {
@@ -6,6 +6,31 @@
   height: 100%;
 }
 
+#root {
+  background-color: $bg-color;
+}
+
 .hide-link {
   text-decoration: none;
+}
+
+.textarea,
+.f-form textarea {
+  background-color: scale-color(#e0e0e0, $lightness: 50%);
+  border-radius: 3px;
+  border: none;
+  padding: 3px 5px;
+  font-size: 14px;
+}
+
+.input,
+.f-form input {
+  &[type="text"],
+  &[type="email"],
+  &[type="tel"],
+  &[type="password"] {
+    border: none;
+    background-color: scale-color(#e0e0e0, $lightness: 50%);
+    padding: 6px;
+  }
 }

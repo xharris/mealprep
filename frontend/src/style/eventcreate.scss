@@ -1,0 +1,23 @@
+.p-event-create {
+  .f-body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 0px;
+    overflow: hidden;
+  }
+  .event-image {
+    width: 200px;
+    height: 200px;
+  }
+  .form-create {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    border-radius: 3px;
+    max-height: 100%;
+    width: 300px;
+    overflow-y: auto;
+  }
+}

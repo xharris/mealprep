@@ -3,7 +3,12 @@ import React from "react";
 import "@style/fake-link.scss";
 
 const FakeLink = props => (
-  <div className="f-fake-link" title={props.title} onClick={props.onClick}>
+  <div
+    {...{
+      ...props,
+      className: `f-fake-link ${props.className || ""}`
+    }}
+  >
     {props.text}
   </div>
 );

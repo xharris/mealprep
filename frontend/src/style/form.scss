@@ -1,0 +1,50 @@
+@import "variables";
+
+.f-form {
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  textarea {
+    max-width: 100%;
+  }
+
+  fieldset {
+    display: flex;
+    padding: 0px;
+  }
+
+  .radio-label {
+    padding: 2px 4px;
+    transition: all $transition;
+
+    &.selected {
+      background-color: #90a4ae;
+    }
+    input[type="radio"] {
+      display: none;
+    }
+  }
+
+  .check-label {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background-color: #cfd8dc;
+    border-radius: 3px;
+
+    input[type="checkbox"] {
+      margin: 5px;
+    }
+
+    > span {
+      line-height: 11px;
+    }
+  }
+}

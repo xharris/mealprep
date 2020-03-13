@@ -1,4 +1,4 @@
-import React, { useState, useEFfect } from "react";
+import React from "react";
 import ReactModal from "react-modal";
 
 import Button from "@feature/button";

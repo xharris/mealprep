@@ -13,6 +13,11 @@
   right: initial !important;
   bottom: initial !important;
   padding-top: 35px !important;
+  min-width: 200px;
+  min-height: 100px;
+  max-height: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 
   .modal-close {
     position: absolute;
@@ -25,7 +30,7 @@
     position: absolute;
     left: 0px;
     top: 0px;
-    margin-left: 20px;
+    margin-left: 14px;
     font-weight: 800;
     margin-top: 6px;
   }

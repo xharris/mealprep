@@ -2,6 +2,45 @@ import React from "react";
 
 var moment = require("moment");
 
+const users = () => [
+  {
+    id: "1",
+    full_name: "Bob Dillington",
+    img_url: "https://avatarfiles.alphacoders.com/146/146703.png",
+    event_status: {
+      "3": "owned",
+      "2": "cant",
+      "1": "going"
+    }
+  }
+];
+
+const comments = [
+  { id: "1", event_id: "3", user_id: "1", value: "Wowie!" },
+  {
+    id: "2",
+    event_id: "3",
+    user_id: "1",
+    value: `Somebody once told me the world is gonna roll me
+  I ain't the sharpest tool in the shed
+  She was looking kind of dumb with her finger and her thumb
+  In the shape of an "L" on her forehead
+  Well the years start coming and they don't stop coming
+  Fed to the rules and I hit the ground running
+  Didn't make sense not to live for fun
+  Your brain gets smart but your head gets dumb
+  So much to do, so much to see
+  So what's wrong with taking the back streets?
+  You'll never know if you don't go
+  You'll never shine if you don't glow
+  Hey now, you're an all-star, get your game on, go play
+  Hey now, you're a rock star, get the show on, get paid
+  And all that glitters is gold
+  Only shooting stars break the mold`
+  },
+  { id: "3", event_id: "3", user_id: "1", value: "Zowie!", reply_to: "1" }
+];
+
 const tags = () => [
   { id: "1", value: "popcorn" },
   { id: "2", value: "free" },
@@ -23,7 +62,8 @@ const events = () => [
     geolocation: [39.254055, -76.711789],
     geo_string: "The Quad, Baltimore, MD 21250",
     img_url: "https://i.kym-cdn.com/photos/images/newsfeed/001/431/201/40f.png",
-    tags: ["2", "3", "4"]
+    tags: ["2", "3", "4"],
+    visibility: "public"
   },
   {
     id: "2",
@@ -36,7 +76,8 @@ const events = () => [
     tags: ["1", "2"],
     users_can_invite: true,
     img_url:
-      "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA"
+      "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA",
+    visibility: "invite"
   },
   {
     id: "3",
@@ -49,7 +90,8 @@ const events = () => [
     geolocation: [39.25479, -76.71184],
     tags: ["1", "2", "3", "4", "5"],
     img_url:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg"
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg",
+    vibility: "private"
   }
 ];
 
@@ -179,51 +221,13 @@ export const getAnnouncements = event_id => {
   ];
 };
 
-export const getUser = user_id => {
-  var data = {
-    id: "1",
-    full_name: "Bob Dillington",
-    img_url: "https://avatarfiles.alphacoders.com/146/146703.png",
-    event_status: {
-      "3": "owned",
-      "2": "cant",
-      "1": "going"
-    }
-  };
-  return data;
-};
-
-const comments = [
-  { id: "1", event_id: "3", user_id: "1", value: "Wowie!" },
-  {
-    id: "2",
-    event_id: "3",
-    user_id: "1",
-    value: `Somebody once told me the world is gonna roll me
-  I ain't the sharpest tool in the shed
-  She was looking kind of dumb with her finger and her thumb
-  In the shape of an "L" on her forehead
-  Well the years start coming and they don't stop coming
-  Fed to the rules and I hit the ground running
-  Didn't make sense not to live for fun
-  Your brain gets smart but your head gets dumb
-  So much to do, so much to see
-  So what's wrong with taking the back streets?
-  You'll never know if you don't go
-  You'll never shine if you don't glow
-  Hey now, you're an all-star, get your game on, go play
-  Hey now, you're a rock star, get the show on, get paid
-  And all that glitters is gold
-  Only shooting stars break the mold`
-  },
-  { id: "3", event_id: "3", user_id: "1", value: "Zowie!", reply_to: "1" }
-];
+export const getUser = user_id => users().filter(u => u.id === user_id)[0];
 
 export const getComments = ({ event_id, comment_id, reply_to_id }) => {
-  if (reply_to_id) return comments.filter(c => reply_to_id == c.reply_to);
-  if (comment_id) return comments.filter(c => c.id == comment_id);
+  if (reply_to_id) return comments.filter(c => reply_to_id === c.reply_to);
+  if (comment_id) return comments.filter(c => c.id === comment_id);
   if (event_id)
-    return comments.filter(c => !c.reply_to && event_id == c.event_id);
+    return comments.filter(c => !c.reply_to && event_id === c.event_id);
 };
 
-export const getTag = id => tags().filter(t => t.id == id)[0];
+export const getTag = id => tags().filter(t => t.id === id)[0];

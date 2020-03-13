@@ -1,10 +1,70 @@
+@import "variables";
+
 .f-map {
+  position: relative;
   background-color: #eeeeee;
   width: 100%;
   height: 100%;
 
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+
   .f-cluster-marker {
     width: 50px;
     height: 50px;
+  }
+
+  .map-search {
+    position: absolute;
+    margin: 3px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+
+    .input-container {
+      display: flex;
+      background-color: $input-bg-color;
+      border-radius: 3px;
+      align-items: center;
+      padding: 2px;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .material-icons {
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+
+  .results {
+    border-radius: 0px 0px 3px 3px;
+    overflow: hidden;
+  }
+
+  .result-container {
+    display: flex;
+    align-items: center;
+    background-color: $input-bg-color;
+    cursor: pointer;
+    padding: 2px 0px;
+    font-size: 14px;
+
+    transition: all $transition;
+
+    &:hover {
+      background-color: scale-color($input-bg-color, $lightness: -10%);
+    }
+
+    .material-icons {
+      color: #bdbdbd;
+      font-size: 14px;
+      margin: 0px 8px;
+    }
   }
 }

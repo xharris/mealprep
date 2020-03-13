@@ -25,7 +25,11 @@ const Form = props => {
       onSubmit={e => {
         if (props.onSubmit) {
           e.preventDefault();
-          props.onSubmit(inputs);
+          var outputs = Object.assign(inputs, {});
+          props.inputs.map(i => {
+            if (i.value) outputs[i.name] = i.value;
+          });
+          props.onSubmit(outputs);
         }
       }}
     >
@@ -51,6 +55,7 @@ const Form = props => {
                   onChange={e =>
                     setInputs({ ...inputs, [i.name]: e.target.value })
                   }
+                  disabled={i.disabled}
                 ></textarea>
               ) : i.type === "date" ? (
                 <DateTimePicker
@@ -108,6 +113,7 @@ const Form = props => {
                     onChange={e =>
                       setInputs({ ...inputs, [i.name]: e.target.checked })
                     }
+                    disabled={i.disabled}
                   />
                   <span>{i.label}</span>
                 </label>
@@ -118,9 +124,13 @@ const Form = props => {
                   pattern={i.pattern}
                   placeholder={i.placeholder}
                   required={i.required ? true : false}
-                  onChange={e =>
-                    setInputs({ ...inputs, [i.name]: e.target.value })
+                  value={i.value}
+                  onChange={
+                    i.value === null
+                      ? e => setInputs({ ...inputs, [i.name]: e.target.value })
+                      : null
                   }
+                  disabled={i.disabled}
                 />
               )}
             </div>

@@ -3,6 +3,9 @@ $transition: cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 
 $bg-color: #eeeeee;
 
+// INPUT
+$input-bg-color: scale-color(#e0e0e0, $lightness: 50%);
+
 // BUTTON (general)
 $button-bg-color: #51aded;
 $button-border-color: #90a4ae;

@@ -1,0 +1,41 @@
+.f-signin-title {
+  display: flex;
+
+  .f-fake-link {
+    font-size: 14px;
+    padding: 2px 5px;
+    border-radius: 3px;
+
+    &.selected {
+      background-color: #e0e0e0;
+    }
+  }
+
+  .separator {
+    height: auto;
+    margin: 0px 6px;
+  }
+}
+
+.f-modal-login {
+  width: 400px;
+  height: 250px;
+
+  .form-login,
+  .form-signup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+    overflow-y: auto;
+
+    > * {
+      flex: 0 1 auto;
+    }
+  }
+  label {
+    font-size: 12px;
+  }
+}

@@ -39,6 +39,8 @@
     border: 2px dashed #607d8b;
     opacity: 0;
     pointer-events: none;
+    text-align: center;
+    text-shadow: 0px 0px 3px white, 0px 0px 3px white;
 
     transition: all $transition;
   }

@@ -76,7 +76,7 @@ const events = () => [
     tags: ["1", "2"],
     users_can_invite: true,
     img_url:
-      "https://resizing.flixster.com/oA7m3PC2rASrRcQQr-5LtXqRoW4=/206x305/v1.bTsxMTE3MjMyMjtqOzE4NDQ0OzEyMDA7ODAwOzEyMDA",
+      "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/9233/9233104_sa.jpg;maxHeight=640;maxWidth=550",
     visibility: "invite"
   },
   {
@@ -90,7 +90,7 @@ const events = () => [
     geolocation: [39.25479, -76.71184],
     tags: ["1", "2", "3", "4", "5"],
     img_url:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Birds_of_Prey_-_The_Album.jpg/220px-Birds_of_Prey_-_The_Album.jpg",
+      "https://mlpnk72yciwc.i.optimole.com/cqhiHA-JPkKrBDX/w:382/h:382/q:90/https://www.bleedingcool.com/wp-content/uploads/2019/10/birds-of-prey-3.jpg",
     vibility: "private"
   }
 ];

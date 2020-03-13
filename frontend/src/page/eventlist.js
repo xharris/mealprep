@@ -4,7 +4,7 @@
  */
 import React, { useState, useEffect, useContext } from "react";
 
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { getEvents, getUserEvents } from "@db";
 import authContext from "@db/authContext";
 
@@ -19,7 +19,7 @@ import "@style/button.scss";
 import "@style/eventlist.scss";
 
 const EventList = withRouter(props => {
-  const user = useContext(authContext);
+  const { user } = useContext(authContext);
   const [events, setEvents] = useState([]);
 
   const [zoom, setZoom] = useState(9);
@@ -27,13 +27,21 @@ const EventList = withRouter(props => {
   const [bounds, setBounds] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      props.history.push("/events/global");
+    }
+  }, []);
+
+  useEffect(() => {
     const route = props.location.pathname;
-    if (route.startsWith("/events/me"))
+    if (route.startsWith("/events/me") && user) {
       setEvents(getUserEvents({ user_id: user.id }));
-    else setEvents(getEvents());
+    } else setEvents(getEvents());
   }, [props.location, user ? user.id : user]);
 
-  return (
+  return user == null && props.location.pathname.startsWith("/events/me") ? (
+    <Redirect to="/events/global" />
+  ) : (
     <div className="p-event-list">
       <Header />
       <Body>

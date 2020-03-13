@@ -16,7 +16,7 @@
 
 .textarea,
 .f-form textarea {
-  background-color: scale-color(#e0e0e0, $lightness: 50%);
+  background-color: $input-bg-color;
   border-radius: 3px;
   border: none;
   padding: 3px 5px;
@@ -30,7 +30,7 @@
   &[type="tel"],
   &[type="password"] {
     border: none;
-    background-color: scale-color(#e0e0e0, $lightness: 50%);
+    background-color: $input-bg-color;
     padding: 6px;
   }
 }

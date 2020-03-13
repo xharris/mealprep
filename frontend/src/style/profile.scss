@@ -1,0 +1,30 @@
+.f-modal-profile {
+  width: 400px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+    font-size: 12px;
+  }
+
+  .form-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+    overflow-y: auto;
+
+    > * {
+      flex: 0 1 auto;
+    }
+  }
+  label {
+    font-size: 12px;
+  }
+}

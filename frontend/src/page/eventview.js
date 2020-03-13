@@ -104,7 +104,7 @@ const Poll = props => {
                     )}
                     <div
                       className="right"
-                      style={{ left: voted ? 0 : 20 }}
+                      style={{ left: !user || voted ? 0 : 20 }}
                       title={`"${c.text}" (${parseInt(vote_percent * 10) /
                         10}%)`}
                     >
@@ -130,12 +130,8 @@ const Poll = props => {
   );
 };
 
-const Comment = ({ comment_id, user_id, value, is_reply }) => {
-  const replies = getComments({ reply_to_id: comment_id });
-  const user = getUser(user_id);
-
-  const [commentBoxOpen, setCommentBoxOpen] = useState(false);
-  const [commentHeight, setCommentHeight] = useState("auto");
+const CommentBox = props => {
+  const { user } = useContext(authContext);
   const onCommentSubmit = e => {
     if (!user) {
       console.log("please log in");
@@ -143,6 +139,31 @@ const Comment = ({ comment_id, user_id, value, is_reply }) => {
       console.log(e.comment);
     }
   };
+  const [commentHeight, setCommentHeight] = useState("auto");
+  return (
+    <Form onSubmit={onCommentSubmit}>
+      <textarea
+        className="textarea"
+        type="text"
+        name="comment"
+        placeholder="Type your comment here..."
+        style={{ height: commentHeight }}
+        onKeyDown={e => {
+          var el = e.target;
+          setCommentHeight(el.scrollHeight - 6);
+        }}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
+
+const Comment = ({ comment_id, user_id, value, is_reply }) => {
+  const { user } = useContext(authContext);
+  const replies = getComments({ reply_to_id: comment_id });
+  const comment_user = getUser(user_id);
+
+  const [commentBoxOpen, setCommentBoxOpen] = useState(false);
 
   return (
     <>
@@ -150,37 +171,24 @@ const Comment = ({ comment_id, user_id, value, is_reply }) => {
         key={comment_id + "-div"}
         className={`comment ${is_reply ? "is_reply" : ""}`}
       >
-        <Thumbnail src={user.img_url} type={"rounded"} />
+        <Thumbnail src={comment_user.img_url} type={"rounded"} />
         <div className="value">
           <div className="text">
-            <span className="username">{user.full_name}</span>
+            <span className="username">{comment_user.full_name}</span>
             {value}
           </div>
 
-          <div className="comment-actions">
-            <FakeLink
-              text={commentBoxOpen ? "Cancel Reply" : "Reply"}
-              onClick={() => setCommentBoxOpen(!commentBoxOpen)}
-            />
-          </div>
+          {user && (
+            <div className="comment-actions">
+              <FakeLink
+                text={commentBoxOpen ? "Cancel Reply" : "Reply"}
+                onClick={() => setCommentBoxOpen(!commentBoxOpen)}
+              />
+            </div>
+          )}
         </div>
       </div>
-      {commentBoxOpen && (
-        <Form onSubmit={onCommentSubmit}>
-          <textarea
-            className="textarea"
-            type="text"
-            name="comment"
-            placeholder="Type your comment here..."
-            style={{ height: commentHeight }}
-            onKeyDown={e => {
-              var el = e.target;
-              setCommentHeight(el.scrollHeight - 6);
-            }}
-          />
-          <Button type="submit">Submit</Button>
-        </Form>
-      )}
+      {commentBoxOpen && <CommentBox />}
       {replies.map(c => (
         <Comment
           key={c.id + "-reply"}
@@ -292,16 +300,19 @@ const EventList = withRouter(props => {
           )}
           <div className="comments">
             <span>Comments</span>
-            <div className="list">
-              {comments.map((c, i) => (
-                <Comment
-                  key={c.id}
-                  user_id={c.user_id}
-                  comment_id={c.id}
-                  value={c.value}
-                />
-              ))}
-            </div>
+            {user && <CommentBox />}
+            {comments.length > 0 && (
+              <div className="list">
+                {comments.map((c, i) => (
+                  <Comment
+                    key={c.id}
+                    user_id={c.user_id}
+                    comment_id={c.id}
+                    value={c.value}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </Body>

@@ -1,0 +1,28 @@
+.p-signin {
+  .f-body {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .f-signin-title {
+      margin-bottom: 10px;
+    }
+
+    .f-form {
+      background-color: white;
+      padding: 8px;
+      border-radius: 2px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+}
